@@ -1,0 +1,37 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], GENERIC[20], PERSPECTIVE
+DCL IN[1], GENERIC[21], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL CONST[0]
+DCL TEMP[0..3], LOCAL
+IMM[0] FLT32 {    0.0000,     0.5000,     1.0000,     2.0000}
+IMM[1] FLT32 {    0.0000,     1.0000,   128.0000,     0.0000}
+DCL TEMP[4]
+  0: DDX TEMP[0].xy, IN[1].xyyy
+  1: MUL TEMP[1], CONST[0].xxxx, IN[1].xyyy
+  2: DDY TEMP[1].xy, TEMP[1]
+  3: SLT TEMP[2].x, IMM[0].xxxx, IN[1].zzzz
+  4: SLT TEMP[3].x, IMM[0].xxxx, IN[1].wwww
+  5: MUL TEMP[2].x, TEMP[2].xxxx, TEMP[3].xxxx
+  6: IF TEMP[2].xxxx :0
+  7:   MIN TEMP[2].x, IN[1].zzzz, IN[1].wwww
+  8:   ADD TEMP[2].x, TEMP[2].xxxx, IMM[0].yyyy
+  9:   MIN TEMP[2].x, TEMP[2].xxxx, IMM[0].zzzz
+ 10: ELSE :0
+ 11:   MUL TEMP[3].x, IMM[0].wwww, IN[1].xxxx
+ 12:   MAD TEMP[0].x, TEMP[3].xxxx, TEMP[0].xxxx, -TEMP[0].yyyy
+ 13:   MAD TEMP[1].x, TEMP[3].xxxx, TEMP[1].xxxx, -TEMP[1].yyyy
+ 14:   MOV TEMP[0].y, TEMP[1].xxxx
+ 15:   MAD TEMP[2].x, IN[1].xxxx, IN[1].xxxx, -IN[1].yyyy
+ 16:   MUL TEMP[4].x, TEMP[0].xxxx, TEMP[0].xxxx
+ 17:   MAD TEMP[0].x, TEMP[0].yyyy, TEMP[0].yyyy, TEMP[4].xxxx
+ 18:   RSQ TEMP[0].x, TEMP[0].xxxx
+ 19:   MUL TEMP[0].x, TEMP[2].xxxx, TEMP[0].xxxx
+ 20:   ADD_SAT TEMP[0].x, IMM[0].yyyy, -TEMP[0].xxxx
+ 21:   MOV TEMP[2].x, TEMP[0].xxxx
+ 22: ENDIF
+ 23: MUL TEMP[0], IN[0], TEMP[2].xxxx
+ 24: MOV OUT[0], TEMP[0]
+ 25: END
+

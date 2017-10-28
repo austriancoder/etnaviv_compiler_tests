@@ -1,0 +1,18 @@
+VERT
+DCL IN[0]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[20]
+DCL CONST[0..1]
+DCL TEMP[0], LOCAL
+IMM[0] FLT32 {    0.0000,     1.0000,     0.0000,     0.0000}
+  0: MOV TEMP[0].x, -CONST[0].xxxx
+  1: SEQ TEMP[0].x, TEMP[0].xxxx, CONST[1].xxxx
+  2: IF TEMP[0].xxxx :0
+  3:   MOV TEMP[0], IMM[0].xyxy
+  4: ELSE :0
+  5:   MOV TEMP[0], IMM[0].yxxy
+  6: ENDIF
+  7: MOV OUT[1], TEMP[0]
+  8: MOV OUT[0], IN[0]
+  9: END
+

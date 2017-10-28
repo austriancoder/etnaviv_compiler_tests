@@ -1,0 +1,129 @@
+VERT
+DCL IN[0]
+DCL OUT[0], POSITION
+DCL OUT[1], COLOR
+DCL TEMP[0..4], LOCAL
+IMM[0] FLT32 {    0.0000,    10.0000,    14.0000,     1.0000}
+IMM[1] FLT32 {   46.0000,    13.0000,     9.0000,    -1.0000}
+  0: MOV TEMP[0], IN[0]
+  1: MOV TEMP[1].x, IMM[0].xxxx
+  2: MOV TEMP[2].x, IMM[0].xxxx
+  3: MOV TEMP[3].x, IMM[0].yyyy
+  4: BGNLOOP :0
+  5:   SEQ TEMP[4].x, TEMP[3].xxxx, IMM[0].zzzz
+  6:   IF TEMP[4].xxxx :0
+  7:     BRK
+  8:   ENDIF
+  9:   ADD TEMP[2].x, TEMP[2].xxxx, TEMP[3].xxxx
+ 10:   ADD TEMP[3].x, TEMP[3].xxxx, IMM[0].wwww
+ 11: ENDLOOP :0
+ 12: SNE TEMP[4].x, TEMP[2].xxxx, IMM[1].xxxx
+ 13: IF TEMP[4].xxxx :0
+ 14:   MOV TEMP[1].x, IMM[0].wwww
+ 15: ENDIF
+ 16: MOV TEMP[2].x, IMM[0].xxxx
+ 17: MOV TEMP[3].x, IMM[0].yyyy
+ 18: BGNLOOP :0
+ 19:   SEQ TEMP[4].x, IMM[0].zzzz, TEMP[3].xxxx
+ 20:   IF TEMP[4].xxxx :0
+ 21:     BRK
+ 22:   ENDIF
+ 23:   ADD TEMP[2].x, TEMP[2].xxxx, TEMP[3].xxxx
+ 24:   ADD TEMP[3].x, TEMP[3].xxxx, IMM[0].wwww
+ 25: ENDLOOP :0
+ 26: SNE TEMP[4].x, TEMP[2].xxxx, IMM[1].xxxx
+ 27: IF TEMP[4].xxxx :0
+ 28:   MOV TEMP[1].x, IMM[0].wwww
+ 29: ENDIF
+ 30: MOV TEMP[2].x, IMM[0].xxxx
+ 31: MOV TEMP[3].x, IMM[0].yyyy
+ 32: BGNLOOP :0
+ 33:   SNE TEMP[4].x, TEMP[3].xxxx, IMM[0].yyyy
+ 34:   IF TEMP[4].xxxx :0
+ 35:     BRK
+ 36:   ENDIF
+ 37:   ADD TEMP[2].x, TEMP[2].xxxx, TEMP[3].xxxx
+ 38:   ADD TEMP[3].x, TEMP[3].xxxx, IMM[0].wwww
+ 39: ENDLOOP :0
+ 40: SNE TEMP[4].x, TEMP[2].xxxx, IMM[0].yyyy
+ 41: IF TEMP[4].xxxx :0
+ 42:   MOV TEMP[1].x, IMM[0].wwww
+ 43: ENDIF
+ 44: MOV TEMP[2].x, IMM[0].xxxx
+ 45: MOV TEMP[3].x, IMM[0].yyyy
+ 46: BGNLOOP :0
+ 47:   SNE TEMP[4].x, IMM[0].yyyy, TEMP[3].xxxx
+ 48:   IF TEMP[4].xxxx :0
+ 49:     BRK
+ 50:   ENDIF
+ 51:   ADD TEMP[2].x, TEMP[2].xxxx, TEMP[3].xxxx
+ 52:   ADD TEMP[3].x, TEMP[3].xxxx, IMM[0].wwww
+ 53: ENDLOOP :0
+ 54: SNE TEMP[4].x, TEMP[2].xxxx, IMM[0].yyyy
+ 55: IF TEMP[4].xxxx :0
+ 56:   MOV TEMP[1].x, IMM[0].wwww
+ 57: ENDIF
+ 58: MOV TEMP[2].x, IMM[0].xxxx
+ 59: MOV TEMP[3].x, IMM[1].yyyy
+ 60: BGNLOOP :0
+ 61:   SEQ TEMP[4].x, TEMP[3].xxxx, IMM[1].zzzz
+ 62:   IF TEMP[4].xxxx :0
+ 63:     BRK
+ 64:   ENDIF
+ 65:   ADD TEMP[2].x, TEMP[2].xxxx, TEMP[3].xxxx
+ 66:   ADD TEMP[3].x, TEMP[3].xxxx, IMM[1].wwww
+ 67: ENDLOOP :0
+ 68: SNE TEMP[4].x, TEMP[2].xxxx, IMM[1].xxxx
+ 69: IF TEMP[4].xxxx :0
+ 70:   MOV TEMP[1].x, IMM[0].wwww
+ 71: ENDIF
+ 72: MOV TEMP[2].x, IMM[0].xxxx
+ 73: MOV TEMP[3].x, IMM[1].yyyy
+ 74: BGNLOOP :0
+ 75:   SEQ TEMP[4].x, IMM[1].zzzz, TEMP[3].xxxx
+ 76:   IF TEMP[4].xxxx :0
+ 77:     BRK
+ 78:   ENDIF
+ 79:   ADD TEMP[2].x, TEMP[2].xxxx, TEMP[3].xxxx
+ 80:   ADD TEMP[3].x, TEMP[3].xxxx, IMM[1].wwww
+ 81: ENDLOOP :0
+ 82: SNE TEMP[4].x, TEMP[2].xxxx, IMM[1].xxxx
+ 83: IF TEMP[4].xxxx :0
+ 84:   MOV TEMP[1].x, IMM[0].wwww
+ 85: ENDIF
+ 86: MOV TEMP[2].x, IMM[0].xxxx
+ 87: MOV TEMP[3].x, IMM[1].yyyy
+ 88: BGNLOOP :0
+ 89:   SNE TEMP[4].x, TEMP[3].xxxx, IMM[1].yyyy
+ 90:   IF TEMP[4].xxxx :0
+ 91:     BRK
+ 92:   ENDIF
+ 93:   ADD TEMP[2].x, TEMP[2].xxxx, TEMP[3].xxxx
+ 94:   ADD TEMP[3].x, TEMP[3].xxxx, IMM[1].wwww
+ 95: ENDLOOP :0
+ 96: SNE TEMP[4].x, TEMP[2].xxxx, IMM[1].yyyy
+ 97: IF TEMP[4].xxxx :0
+ 98:   MOV TEMP[1].x, IMM[0].wwww
+ 99: ENDIF
+100: MOV TEMP[2].x, IMM[0].xxxx
+101: MOV TEMP[3].x, IMM[1].yyyy
+102: BGNLOOP :0
+103:   SNE TEMP[4].x, IMM[1].yyyy, TEMP[3].xxxx
+104:   IF TEMP[4].xxxx :0
+105:     BRK
+106:   ENDIF
+107:   ADD TEMP[2].x, TEMP[2].xxxx, TEMP[3].xxxx
+108:   ADD TEMP[3].x, TEMP[3].xxxx, IMM[1].wwww
+109: ENDLOOP :0
+110: SNE TEMP[2].x, TEMP[2].xxxx, IMM[1].yyyy
+111: IF TEMP[2].xxxx :0
+112:   MOV TEMP[1].x, IMM[0].wwww
+113: ENDIF
+114: IF TEMP[1].xxxx :0
+115:   MOV TEMP[1], IMM[0].wxxw
+116: ELSE :0
+117:   MOV TEMP[1], IMM[0].xwxw
+118: ENDIF
+119: MOV OUT[0], TEMP[0]
+120: MOV_SAT OUT[1], TEMP[1]
+121: END

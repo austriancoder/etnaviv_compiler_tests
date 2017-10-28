@@ -1,0 +1,9 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL OUT[0], COLOR
+DCL CONST[0]
+  0: RCP OUT[0].x, CONST[0].xxxx
+  1: RCP OUT[0].y, CONST[0].yyyy
+  2: RCP OUT[0].z, CONST[0].zzzz
+  3: RCP OUT[0].w, CONST[0].wwww
+  4: END

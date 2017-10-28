@@ -1,0 +1,19 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL OUT[0], COLOR
+IMM[0] FLT32 {    0.5000,     2.0000,     3.0000,     4.0000}
+IMM[1] FLT32 {    0.0000,     1.0000,   128.0000,     0.0000}
+DCL TEMP[0]
+  0: LG2 TEMP[0].x, IMM[0].xxxx
+  1: MUL TEMP[0].x, IMM[0].yyyy, TEMP[0].xxxx
+  2: EX2 OUT[0].x, TEMP[0].xxxx
+  3: LG2 TEMP[0].x, IMM[0].xxxx
+  4: MUL TEMP[0].x, IMM[0].zzzz, TEMP[0].xxxx
+  5: EX2 OUT[0].y, TEMP[0].xxxx
+  6: LG2 TEMP[0].x, IMM[0].xxxx
+  7: MUL TEMP[0].x, IMM[0].wwww, TEMP[0].xxxx
+  8: EX2 OUT[0].z, TEMP[0].xxxx
+  9: LG2 TEMP[0].x, IMM[0].wwww
+ 10: MUL TEMP[0].x, IMM[0].xxxx, TEMP[0].xxxx
+ 11: EX2 OUT[0].w, TEMP[0].xxxx
+ 12: END

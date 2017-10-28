@@ -1,0 +1,137 @@
+VERT
+DCL IN[0]
+DCL IN[1]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[9]
+DCL OUT[2], GENERIC[10]
+DCL OUT[3], GENERIC[11]
+DCL OUT[4], GENERIC[12]
+DCL OUT[5], GENERIC[13]
+DCL OUT[6], GENERIC[14]
+DCL CONST[0..19]
+DCL TEMP[0..6], LOCAL
+IMM[0] FLT32 {   15.0000,     0.0000,     0.8696,     0.1500}
+  0: MOV TEMP[0].y, IMM[0].xxxx
+  1: MOV TEMP[0].x, IN[0].xxxx
+  2: MOV TEMP[1].x, -CONST[13].xxxx
+  3: COS TEMP[2].x, TEMP[1].xxxx
+  4: SIN TEMP[1].x, TEMP[1].xxxx
+  5: MOV TEMP[3].x, TEMP[2].xxxx
+  6: MOV TEMP[3].y, TEMP[1].xxxx
+  7: MOV TEMP[4].w, IMM[0].yyyy
+  8: MUL TEMP[5].x, IN[0].zzzz, TEMP[1].xxxx
+  9: MAD TEMP[4].x, IN[0].xxxx, TEMP[2].xxxx, -TEMP[5].xxxx
+ 10: MUL TEMP[1].x, IN[0].xxxx, TEMP[1].xxxx
+ 11: MAD TEMP[1].x, IN[0].zzzz, TEMP[2].xxxx, TEMP[1].xxxx
+ 12: MOV TEMP[4].y, TEMP[1].xxxx
+ 13: MOV TEMP[4].z, CONST[15].xxxx
+ 14: MOV TEMP[1].zw, TEMP[4].wwzw
+ 15: MUL TEMP[1].xy, TEMP[4].xyyy, CONST[12].xxxx
+ 16: MUL TEMP[2], CONST[4], IN[0].xxxx
+ 17: MAD TEMP[2], CONST[5], IN[0].yyyy, TEMP[2]
+ 18: MAD TEMP[2], CONST[6], IN[0].zzzz, TEMP[2]
+ 19: ADD TEMP[2].xyw, TEMP[2], CONST[7]
+ 20: MUL TEMP[4], CONST[16], IN[0].xxxx
+ 21: MAD TEMP[4], CONST[17], IN[0].yyyy, TEMP[4]
+ 22: MAD TEMP[4], CONST[18], IN[0].zzzz, TEMP[4]
+ 23: ADD TEMP[4], TEMP[4], CONST[19]
+ 24: MOV TEMP[3].xy, TEMP[3].xyxx
+ 25: MAD TEMP[5].x, IN[1].xxxx, IMM[0].zzzz, IMM[0].wwww
+ 26: MUL TEMP[5].x, CONST[14].xxxx, TEMP[5].xxxx
+ 27: MOV TEMP[5].z, TEMP[5].xxxx
+ 28: MUL TEMP[6], CONST[8], IN[0].xxxx
+ 29: MAD TEMP[6], CONST[9], IN[0].yyyy, TEMP[6]
+ 30: MAD TEMP[6], CONST[10], IN[0].zzzz, TEMP[6]
+ 31: ADD TEMP[6].xy, TEMP[6], CONST[11]
+ 32: MOV TEMP[3].zw, TEMP[6].yyxy
+ 33: MUL TEMP[6], CONST[0], IN[0].xxxx
+ 34: MAD TEMP[6], CONST[1], IN[0].yyyy, TEMP[6]
+ 35: MAD TEMP[6], CONST[2], IN[0].zzzz, TEMP[6]
+ 36: ADD TEMP[6].xyw, TEMP[6], CONST[3]
+ 37: MOV TEMP[6].xyz, TEMP[6].xywx
+ 38: MOV TEMP[6].w, TEMP[2].xxxx
+ 39: MOV TEMP[2].xy, TEMP[2].ywyy
+ 40: MOV TEMP[5].w, IN[1].yyyy
+ 41: MOV TEMP[5].xy, IN[1].xyxx
+ 42: MOV TEMP[2].zw, TEMP[0].yyxy
+ 43: MOV TEMP[0].x, IN[0].zzzz
+ 44: MOV OUT[5], TEMP[2]
+ 45: MOV OUT[4], TEMP[6]
+ 46: MOV OUT[1], TEMP[1]
+ 47: MOV OUT[6], TEMP[0]
+ 48: MOV OUT[3], TEMP[5]
+ 49: MOV OUT[2], TEMP[3]
+ 50: MOV OUT[0], TEMP[4]
+ 51: END
+
+VERT
+0000: 01001009 00000000 00000000 20000148  MOV t0._y__, void, void, u20.xxxx
+0001: 00801009 00000000 00000000 00000088  MOV t0.x___, void, void, t8.xxxx
+0002: 00811009 00000000 00000000 204000d8  MOV t1.x___, void, void, -u13.xxxx
+0003: 07891003 00001800 00000ac0 00000002  MUL t9, t1.xxxx, u21.xxxx, void
+0004: 00821023 00000000 00000000 00390098  COS t2.x___, void, void, t9
+0005: 07891003 00001800 00000ac0 00000002  MUL t9, t1.xxxx, u21.xxxx, void
+0006: 00811022 00000000 00000000 00390098  SIN t1.x___, void, void, t9
+0007: 00831009 00000000 00000000 00000028  MOV t3.x___, void, void, t2.xxxx
+0008: 01031009 00000000 00000000 00000018  MOV t3._y__, void, void, t1.xxxx
+0009: 04041009 00000000 00000000 20154148  MOV t4.___w, void, void, u20.yyyy
+0010: 00851003 2a808800 000000c0 00000000  MUL t5.x___, t8.zzzz, t1.xxxx, void
+0011: 00841002 00008800 00000140 00400058  MAD t4.x___, t8.xxxx, t2.xxxx, -t5.xxxx
+0012: 00811003 00008800 000000c0 00000000  MUL t1.x___, t8.xxxx, t1.xxxx, void
+0013: 00811002 2a808800 00000140 00000018  MAD t1.x___, t8.zzzz, t2.xxxx, t1.xxxx
+0014: 01041009 00000000 00000000 00000018  MOV t4._y__, void, void, t1.xxxx
+0015: 02041009 00000000 00000000 200000f8  MOV t4.__z_, void, void, u15.xxxx
+0016: 06011009 00000000 00000000 003bc048  MOV t1.__zw, void, void, t4.wwzw
+0017: 01811003 15004800 00000640 00000002  MUL t1.xy__, t4.xyyy, u12.xxxx, void
+0018: 07821003 39004800 00000450 00000000  MUL t2, u4, t8.xxxx, void
+0019: 07821002 39005800 00aa0450 00390028  MAD t2, u5, t8.yyyy, t2
+0020: 07821002 39006800 01540450 00390028  MAD t2, u6, t8.zzzz, t2
+0021: 05821001 39002800 00000000 20390078  ADD t2.xy_w, t2, void, u7
+0022: 07841003 39010800 00000450 00000000  MUL t4, u16, t8.xxxx, void
+0023: 07841002 39011800 00aa0450 00390048  MAD t4, u17, t8.yyyy, t4
+0024: 07841002 39012800 01540450 00390048  MAD t4, u18, t8.zzzz, t4
+0025: 07841001 39004800 00000000 20390138  ADD t4, t4, void, u19
+0026: 01831009 00000000 00000000 00010038  MOV t3.xy__, void, void, t3.xyxx
+0027: 00851002 00007800 01540a40 203fc14a  MAD t5.x___, t7.xxxx, u20.zzzz, u20.wwww
+0028: 00851003 0000e800 000002d0 00000000  MUL t5.x___, u14.xxxx, t5.xxxx, void
+0029: 02051009 00000000 00000000 00000058  MOV t5.__z_, void, void, t5.xxxx
+0030: 07861003 39008800 00000450 00000000  MUL t6, u8, t8.xxxx, void
+0031: 07861002 39009800 00aa0450 00390068  MAD t6, u9, t8.yyyy, t6
+0032: 07861002 3900a800 01540450 00390068  MAD t6, u10, t8.zzzz, t6
+0033: 01861001 39006800 00000000 203900b8  ADD t6.xy__, t6, void, u11
+0034: 06031009 00000000 00000000 00114068  MOV t3.__zw, void, void, t6.yyxy
+0035: 07861003 39000800 00000450 00000000  MUL t6, u0, t8.xxxx, void
+0036: 07861002 39001800 00aa0450 00390068  MAD t6, u1, t8.yyyy, t6
+0037: 07861002 39002800 01540450 00390068  MAD t6, u2, t8.zzzz, t6
+0038: 05861001 39006800 00000000 20390038  ADD t6.xy_w, t6, void, u3
+0039: 03861009 00000000 00000000 000d0068  MOV t6.xyz_, void, void, t6.xywx
+0040: 04061009 00000000 00000000 00000028  MOV t6.___w, void, void, t2.xxxx
+0041: 01821009 00000000 00000000 00174028  MOV t2.xy__, void, void, t2.ywyy
+0042: 04051009 00000000 00000000 00154078  MOV t5.___w, void, void, t7.yyyy
+0043: 01851009 00000000 00000000 00010078  MOV t5.xy__, void, void, t7.xyxx
+0044: 06021009 00000000 00000000 00114008  MOV t2.__zw, void, void, t0.yyxy
+0045: 00801009 00000000 00000000 002a8088  MOV t0.x___, void, void, t8.zzzz
+num loops: 0
+num temps: 10
+num const: 80
+immediates:
+ [20].x = 15.000000 (0x41700000)
+ [20].y = 0.000000 (0x00000000)
+ [20].z = 0.869600 (0x3f5e9e1b)
+ [20].w = 0.150000 (0x3e19999a)
+ [21].x = 0.636620 (0x3f22f983)
+inputs:
+ [8] name=POSITION index=0 comps=3
+ [7] name=POSITION index=0 comps=2
+outputs:
+ [1] name=GENERIC index=9 comps=4
+ [3] name=GENERIC index=10 comps=4
+ [5] name=GENERIC index=11 comps=4
+ [6] name=GENERIC index=12 comps=4
+ [2] name=GENERIC index=13 comps=4
+ [0] name=GENERIC index=14 comps=4
+special:
+  vs_pos_out_reg=4
+  vs_pointsize_out_reg=-1
+  vs_load_balancing=0x0f3f060b
+  input_count_unk8=0x00000001

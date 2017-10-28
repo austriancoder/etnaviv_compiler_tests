@@ -1,0 +1,35 @@
+VERT
+DCL IN[0]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[20]
+DCL CONST[0..20]
+DCL TEMP[0..3], LOCAL
+DCL ADDR[0]
+IMM[0] FLT32 {    0.0000,     1.0000,     0.0000,     0.0000}
+  0: TRUNC TEMP[0].x, IN[0].wwww
+  1: ARL ADDR[0].x, TEMP[0].xxxx
+  2: MOV TEMP[1], CONST[ADDR[0].x+4]
+  3: MAD TEMP[1].xy, IN[0].xyyy, TEMP[1].zwww, TEMP[1].xyyy
+  4: MUL TEMP[2], CONST[8], TEMP[1].xxxx
+  5: MAD TEMP[1], CONST[9], TEMP[1].yyyy, TEMP[2]
+  6: ADD TEMP[1], TEMP[1], CONST[11]
+  7: MOV TEMP[2].w, TEMP[1].wwww
+  8: RCP TEMP[3].x, TEMP[1].wwww
+  9: MUL TEMP[2].xyz, TEMP[1].xyzz, TEMP[3].xxxx
+ 10: ADD TEMP[2], TEMP[2], -CONST[12]
+ 11: MUL TEMP[2].xyz, TEMP[2].xyzz, TEMP[2].wwww
+ 12: MUL TEMP[1], CONST[0], TEMP[2].xxxx
+ 13: MAD TEMP[1], CONST[1], TEMP[2].yyyy, TEMP[1]
+ 14: MAD TEMP[1], CONST[2], TEMP[2].zzzz, TEMP[1]
+ 15: MAD TEMP[1], CONST[3], TEMP[2].wwww, TEMP[1]
+ 16: ARL ADDR[0].x, TEMP[0].xxxx
+ 17: MOV TEMP[0], CONST[ADDR[0].x+17]
+ 18: MAD TEMP[0].xy, IN[0].xyyy, TEMP[0].zwww, TEMP[0].xyyy
+ 19: MUL TEMP[2], CONST[13], TEMP[0].xxxx
+ 20: MAD TEMP[0], CONST[14], TEMP[0].yyyy, TEMP[2]
+ 21: ADD TEMP[0].xy, TEMP[0], CONST[16]
+ 22: MOV TEMP[0].xy, TEMP[0].xyxx
+ 23: MOV OUT[1], TEMP[0]
+ 24: MOV OUT[0], TEMP[1]
+ 25: END
+

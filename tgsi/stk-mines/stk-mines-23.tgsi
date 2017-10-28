@@ -1,0 +1,58 @@
+VERT
+DCL IN[0]
+DCL IN[1]
+DCL IN[2]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[0]
+DCL OUT[2], GENERIC[20]
+DCL OUT[3], GENERIC[21]
+DCL OUT[4], GENERIC[22]
+DCL CONST[0..11]
+DCL TEMP[0..2], ARRAY(1), LOCAL
+DCL TEMP[3..6], LOCAL
+  0: MOV TEMP[0], CONST[1].xyzz
+  1: MOV TEMP[1], CONST[2].xyzz
+  2: MOV TEMP[2], CONST[3].xyzz
+  3: MUL TEMP[3].xyz, TEMP[0].xyzz, IN[1].xxxx
+  4: MAD TEMP[3].xyz, TEMP[1].xyzz, IN[1].yyyy, TEMP[3].xyzz
+  5: MAD TEMP[3].xyz, TEMP[2].xyzz, IN[1].zzzz, TEMP[3].xyzz
+  6: DP3 TEMP[4].x, TEMP[3].xyzz, TEMP[3].xyzz
+  7: RSQ TEMP[4].x, TEMP[4].xxxx
+  8: MUL TEMP[3].xyz, TEMP[3].xyzz, TEMP[4].xxxx
+  9: DP3 TEMP[4].x, TEMP[0].xyzz, TEMP[0].xyzz
+ 10: RSQ TEMP[4].x, TEMP[4].xxxx
+ 11: MUL TEMP[4].xyz, TEMP[0].xyzz, TEMP[4].xxxx
+ 12: MUL TEMP[5].xyz, TEMP[3].zxyy, TEMP[4].yzxx
+ 13: MAD TEMP[5].xyz, TEMP[3].yzxx, TEMP[4].zxyy, -TEMP[5].xyzz
+ 14: MUL TEMP[6], CONST[8], IN[0].xxxx
+ 15: MAD TEMP[6], CONST[9], IN[0].yyyy, TEMP[6]
+ 16: MAD TEMP[6], CONST[10], IN[0].zzzz, TEMP[6]
+ 17: MAD TEMP[6].xyz, CONST[11], IN[0].wwww, TEMP[6]
+ 18: DP3 TEMP[4].x, CONST[0].xyzz, TEMP[4].xyzz
+ 19: DP3 TEMP[5].x, CONST[0].xyzz, TEMP[5].xyzz
+ 20: MOV TEMP[4].y, TEMP[5].xxxx
+ 21: DP3 TEMP[3].x, CONST[0].xyzz, TEMP[3].xyzz
+ 22: MOV TEMP[4].z, TEMP[3].xxxx
+ 23: DP3 TEMP[3].x, TEMP[4].xyzz, TEMP[4].xyzz
+ 24: RSQ TEMP[3].x, TEMP[3].xxxx
+ 25: MUL TEMP[3].xyz, TEMP[4].xyzz, TEMP[3].xxxx
+ 26: DP3 TEMP[4].x, TEMP[6].xyzz, TEMP[6].xyzz
+ 27: RSQ TEMP[4].x, TEMP[4].xxxx
+ 28: MUL TEMP[4].xyz, TEMP[6].xyzz, TEMP[4].xxxx
+ 29: MOV TEMP[4].xyz, -TEMP[4].xyzx
+ 30: DP3 TEMP[5].x, TEMP[4].xyzz, TEMP[4].xyzz
+ 31: RSQ TEMP[5].x, TEMP[5].xxxx
+ 32: MUL TEMP[4].xyz, TEMP[4].xyzz, TEMP[5].xxxx
+ 33: MUL TEMP[5], CONST[4], IN[0].xxxx
+ 34: MAD TEMP[5], CONST[5], IN[0].yyyy, TEMP[5]
+ 35: MAD TEMP[5], CONST[6], IN[0].zzzz, TEMP[5]
+ 36: MAD TEMP[5], CONST[7], IN[0].wwww, TEMP[5]
+ 37: MOV TEMP[3].xyz, TEMP[3].xyzx
+ 38: MOV TEMP[3].w, TEMP[4].xxxx
+ 39: MOV TEMP[4].xy, TEMP[4].yzyy
+ 40: MOV OUT[3], TEMP[3]
+ 41: MOV OUT[1], IN[2]
+ 42: MOV OUT[4], TEMP[4]
+ 43: MOV OUT[2], TEMP[5]
+ 44: MOV OUT[0], TEMP[5]
+ 45: END

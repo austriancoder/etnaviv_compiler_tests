@@ -1,0 +1,42 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL OUT[0], COLOR
+DCL CONST[0..7]
+DCL TEMP[0..2], ARRAY(1), LOCAL
+DCL TEMP[3..4], LOCAL
+DCL ADDR[0]
+IMM[0] FLT32 {    0.0000,     1.0000,     2.0000,     0.0000}
+  0: MOV TEMP[0], CONST[0].xyzz
+  1: MOV TEMP[1], CONST[1].xyzz
+  2: MOV TEMP[2], CONST[2].xyzz
+  3: ARL ADDR[0].x, CONST[6].xxxx
+  4: MOV TEMP[3].xyz, CONST[ADDR[0].x].xyzx
+  5: SEQ TEMP[4].x, CONST[5].xxxx, IMM[0].xxxx
+  6: IF TEMP[4].xxxx :0
+  7:   MOV TEMP[3].x, CONST[7].xxxx
+  8: ENDIF
+  9: SEQ TEMP[4].x, CONST[5].xxxx, IMM[0].yyyy
+ 10: IF TEMP[4].xxxx :0
+ 11:   MOV TEMP[3].y, CONST[7].xxxx
+ 12: ENDIF
+ 13: SEQ TEMP[4].x, CONST[5].xxxx, IMM[0].zzzz
+ 14: IF TEMP[4].xxxx :0
+ 15:   MOV TEMP[3].z, CONST[7].xxxx
+ 16: ENDIF
+ 17: ARL ADDR[0].x, CONST[6].xxxx
+ 18: MOV TEMP[ADDR[0].x](1).xyz, TEMP[3].xyzx
+ 19: MUL TEMP[3].xyz, TEMP[0].xyzz, CONST[3].xxxx
+ 20: MAD TEMP[3].xyz, TEMP[1].xyzz, CONST[3].yyyy, TEMP[3].xyzz
+ 21: MAD TEMP[3].xyz, TEMP[2].xyzz, CONST[3].zzzz, TEMP[3].xyzz
+ 22: ADD TEMP[3].xyz, TEMP[3].xyzz, -CONST[4].xyzz
+ 23: DP3 TEMP[3].x, TEMP[3].xyzz, TEMP[3].xyzz
+ 24: SLT TEMP[3].x, TEMP[3].xxxx, IMM[0].wwww
+ 25: IF TEMP[3].xxxx :0
+ 26:   MOV TEMP[3], IMM[0].xyxy
+ 27: ELSE :0
+ 28:   MOV TEMP[3], IMM[0].yxxy
+ 29: ENDIF
+ 30: MOV OUT[0], TEMP[3]
+ 31: END
+
+

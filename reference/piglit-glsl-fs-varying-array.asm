@@ -1,0 +1,31 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], GENERIC[9], PERSPECTIVE
+DCL IN[1], GENERIC[10], PERSPECTIVE
+DCL IN[2], GENERIC[11], PERSPECTIVE
+DCL IN[3], GENERIC[12], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL CONST[0]
+DCL TEMP[0], LOCAL
+DCL ADDR[0]
+  0: ARL ADDR[0].x, CONST[0].xxxx
+  1: MOV TEMP[0], IN[ADDR[0].x]
+  2: MOV OUT[0], TEMP[0]
+  3: END
+
+
+FRAG
+0000: 07821025 00000000 00000000 20000008  FLOOR t2, void, void, u0.xxxx
+0001: 0080000a 00000000 00000000 00390028  MOVAR a0.x___, void, void, t2
+0002: 07811009 00000000 00000000 02390018  MOV t1, void, void, t1[a.x]
+num loops: 0
+num temps: 3
+num const: 4
+immediates:
+inputs:
+ [1] name=GENERIC index=9 comps=4
+outputs:
+special:
+  ps_color_out_reg=1
+  ps_depth_out_reg=-1
+  input_count_unk8=0x0000001f

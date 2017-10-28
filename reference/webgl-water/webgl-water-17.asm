@@ -1,0 +1,55 @@
+VERT
+DCL IN[0]
+DCL OUT[0], POSITION
+DCL CONST[0..12]
+DCL TEMP[0..2], LOCAL
+  0: MUL TEMP[0], CONST[4], IN[0].xxxx
+  1: MAD TEMP[0], CONST[5], IN[0].yyyy, TEMP[0]
+  2: MAD TEMP[0], CONST[6], IN[0].zzzz, TEMP[0]
+  3: MAD TEMP[0], CONST[7], IN[0].wwww, TEMP[0]
+  4: MUL TEMP[1], CONST[8], TEMP[0].xxxx
+  5: MAD TEMP[1], CONST[9], TEMP[0].yyyy, TEMP[1]
+  6: MAD TEMP[1], CONST[10], TEMP[0].zzzz, TEMP[1]
+  7: MAD TEMP[0], CONST[11], TEMP[0].wwww, TEMP[1]
+  8: MOV TEMP[1].w, TEMP[0].wwww
+  9: RCP TEMP[2].x, TEMP[0].wwww
+ 10: MUL TEMP[1].xyz, TEMP[0].xyzz, TEMP[2].xxxx
+ 11: ADD TEMP[0], TEMP[1], -CONST[12]
+ 12: MUL TEMP[1].xyz, TEMP[0].xyzz, TEMP[0].wwww
+ 13: MUL TEMP[2], CONST[0], TEMP[1].xxxx
+ 14: MAD TEMP[2], CONST[1], TEMP[1].yyyy, TEMP[2]
+ 15: MAD TEMP[1], CONST[2], TEMP[1].zzzz, TEMP[2]
+ 16: MAD TEMP[0], CONST[3], TEMP[0].wwww, TEMP[1]
+ 17: MOV OUT[0], TEMP[0]
+ 18: END
+
+VERT
+0000: 07801003 39004800 000000d0 00000000  MUL t0, u4, t1.xxxx, void
+0001: 07801002 39005800 00aa00d0 00390008  MAD t0, u5, t1.yyyy, t0
+0002: 07801002 39006800 015400d0 00390008  MAD t0, u6, t1.zzzz, t0
+0003: 07801002 39007800 01fe00d0 00390008  MAD t0, u7, t1.wwww, t0
+0004: 07811003 39008800 00000050 00000000  MUL t1, u8, t0.xxxx, void
+0005: 07811002 39009800 00aa0050 00390018  MAD t1, u9, t0.yyyy, t1
+0006: 07811002 3900a800 01540050 00390018  MAD t1, u10, t0.zzzz, t1
+0007: 07801002 3900b800 01fe0050 00390018  MAD t0, u11, t0.wwww, t1
+0008: 04011009 00000000 00000000 003fc008  MOV t1.___w, void, void, t0.wwww
+0009: 0082100c 00000000 00000000 003fc008  RCP t2.x___, void, void, t0.wwww
+0010: 03811003 29000800 00000140 00000000  MUL t1.xyz_, t0.xyzz, t2.xxxx, void
+0011: 07801001 39001800 00000000 207900c8  ADD t0, t1, void, -u12
+0012: 03811003 29000800 01fe0040 00000000  MUL t1.xyz_, t0.xyzz, t0.wwww, void
+0013: 07821003 39000800 000000d0 00000000  MUL t2, u0, t1.xxxx, void
+0014: 07821002 39001800 00aa00d0 00390028  MAD t2, u1, t1.yyyy, t2
+0015: 07811002 39002800 015400d0 00390028  MAD t1, u2, t1.zzzz, t2
+0016: 07801002 39003800 01fe0050 00390018  MAD t0, u3, t0.wwww, t1
+num loops: 0
+num temps: 3
+num const: 52
+immediates:
+inputs:
+ [1] name=POSITION index=0 comps=4
+outputs:
+special:
+  vs_pos_out_reg=0
+  vs_pointsize_out_reg=-1
+  vs_load_balancing=0x0f3f0522
+  input_count_unk8=0x00000001

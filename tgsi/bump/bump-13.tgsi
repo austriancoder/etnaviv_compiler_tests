@@ -1,0 +1,53 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], GENERIC[20], PERSPECTIVE
+DCL IN[1], GENERIC[21], PERSPECTIVE
+DCL IN[2], GENERIC[22], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL SAMP[0]
+DCL TEMP[0..3], LOCAL
+IMM[0] FLT32 {    0.0010,     0.0000,    13.0000,   100.0000}
+IMM[1] FLT32 {    0.8000,     1.0000,     0.6667,     0.3333}
+IMM[2] FLT32 {    0.1600,     1.0000,     0.4082,     0.8165}
+IMM[3] FLT32 {    0.1000,     1.0000,     0.0000,     0.0000}
+IMM[4] FLT32 {    0.0000,     1.0000,   128.0000,     0.0000}
+DCL TEMP[4]
+  0: MOV TEMP[0].xy, IN[0].zwzz
+  1: MOV TEMP[0].z, IN[1].xxxx
+  2: MOV TEMP[1].xy, IN[0].xyyy
+  3: TEX TEMP[1].x, TEMP[1], SAMP[0], 2D
+  4: ADD TEMP[2].xy, IN[0].xyyy, IMM[0].xyyy
+  5: MOV TEMP[2].xy, TEMP[2].xyyy
+  6: TEX TEMP[2].x, TEMP[2], SAMP[0], 2D
+  7: ADD TEMP[2].x, TEMP[2].xxxx, -TEMP[1].xxxx
+  8: ADD TEMP[3].xy, IN[0].xyyy, IMM[0].yxxx
+  9: MOV TEMP[3].xy, TEMP[3].xyyy
+ 10: TEX TEMP[3].x, TEMP[3], SAMP[0], 2D
+ 11: ADD TEMP[1].x, TEMP[3].xxxx, -TEMP[1].xxxx
+ 12: MUL TEMP[2].x, IMM[0].zzzz, TEMP[2].xxxx
+ 13: MUL TEMP[2].xyz, TEMP[2].xxxx, IN[1].yzww
+ 14: ADD TEMP[0].xyz, TEMP[0].xyzz, -TEMP[2].xyzz
+ 15: MUL TEMP[1].x, IMM[0].zzzz, TEMP[1].xxxx
+ 16: MUL TEMP[1].xyz, TEMP[1].xxxx, IN[2].xyzz
+ 17: ADD TEMP[0].xyz, TEMP[0].xyzz, -TEMP[1].xyzz
+ 18: MUL TEMP[4].x, TEMP[0].xxxx, TEMP[0].xxxx
+ 19: MAD TEMP[4].x, TEMP[0].yyyy, TEMP[0].yyyy, TEMP[4].xxxx
+ 20: MAD TEMP[1].x, TEMP[0].zzzz, TEMP[0].zzzz, TEMP[4].xxxx
+ 21: RSQ TEMP[1].x, TEMP[1].xxxx
+ 22: MUL TEMP[0].xyz, TEMP[0].xyzz, TEMP[1].xxxx
+ 23: MUL TEMP[4].x, TEMP[0].xxxx, IMM[1].zzzz
+ 24: MAD TEMP[4].x, TEMP[0].yyyy, IMM[1].zzzz, TEMP[4].xxxx
+ 25: MAD TEMP[1].x, TEMP[0].zzzz, IMM[1].wwww, TEMP[4].xxxx
+ 26: MAX TEMP[1].x, TEMP[1].xxxx, IMM[0].yyyy
+ 27: MUL TEMP[4].x, TEMP[0].xxxx, IMM[2].zzzz
+ 28: MAD TEMP[4].x, TEMP[0].yyyy, IMM[2].zzzz, TEMP[4].xxxx
+ 29: MAD TEMP[0].x, TEMP[0].zzzz, IMM[2].wwww, TEMP[4].xxxx
+ 30: MAX TEMP[0].x, TEMP[0].xxxx, IMM[0].yyyy
+ 31: LG2 TEMP[4].x, TEMP[0].xxxx
+ 32: MUL TEMP[4].x, IMM[0].wwww, TEMP[4].xxxx
+ 33: EX2 TEMP[0].x, TEMP[4].xxxx
+ 34: MAD TEMP[0], IMM[2].xxxy, TEMP[0].xxxx, IMM[3].xxxy
+ 35: MAD TEMP[0], IMM[1].xxxy, TEMP[1].xxxx, TEMP[0]
+ 36: MOV OUT[0], TEMP[0]
+ 37: END
+

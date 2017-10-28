@@ -1,0 +1,90 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], GENERIC[9], PERSPECTIVE
+DCL IN[1], GENERIC[10], PERSPECTIVE
+DCL IN[2], GENERIC[11], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL SAMP[0]
+DCL CONST[0..1]
+DCL CONST[3..6]
+DCL TEMP[0..3], LOCAL
+IMM[0] FLT32 {    0.0000,     0.0000,     0.0000,     0.0000}
+  0: MOV TEMP[0].xy, IN[1].zwzz
+  1: MOV TEMP[0].z, IN[2].xxxx
+  2: MOV TEMP[1].xy, IN[1].xyyy
+  3: TEX TEMP[1], TEMP[1], SAMP[0], 2D
+  4: DP3 TEMP[2].x, IN[2].yzww, IN[2].yzww
+  5: RSQ TEMP[2].x, TEMP[2].xxxx
+  6: MUL TEMP[2].xyz, IN[2].yzww, TEMP[2].xxxx
+  7: DP3 TEMP[3].x, TEMP[0].xyzz, TEMP[0].xyzz
+  8: RSQ TEMP[3].x, TEMP[3].xxxx
+  9: MUL TEMP[0].xyz, TEMP[0].xyzz, TEMP[3].xxxx
+ 10: DP3 TEMP[0].x, TEMP[2].xyzz, TEMP[0].xyzz
+ 11: MAX TEMP[0].x, TEMP[0].xxxx, IMM[0].xxxx
+ 12: MUL TEMP[0], TEMP[1], TEMP[0].xxxx
+ 13: MAD TEMP[0], TEMP[1], CONST[1], TEMP[0]
+ 14: MUL TEMP[0].xyz, CONST[0], TEMP[0]
+ 15: MOV TEMP[0].xyz, TEMP[0].xyzx
+ 16: MOV TEMP[0].w, TEMP[1].wwww
+ 17: MOV TEMP[2].xyz, CONST[6].xyzx
+ 18: MOV TEMP[2].w, TEMP[1].wwww
+ 19: RCP TEMP[1].x, IN[0].wwww
+ 20: MUL TEMP[1].x, IN[0].zzzz, TEMP[1].xxxx
+ 21: POW TEMP[1].x, TEMP[1].xxxx, CONST[3].xxxx
+ 22: MAD TEMP[1].x, TEMP[1].xxxx, CONST[4].xxxx, -CONST[5].xxxx
+ 23: MOV_SAT TEMP[1].x, TEMP[1].xxxx
+ 24: LRP TEMP[0], TEMP[1].xxxx, TEMP[2], TEMP[0]
+ 25: MOV OUT[0], TEMP[0]
+ 26: END
+
+FRAG
+0000: 01851009 00000000 00000000 002b8028  MOV t5.xy__, void, void, t2.zwzz
+0001: 02051009 00000000 00000000 00000038  MOV t5.__z_, void, void, t3.xxxx
+0002: 01821009 00000000 00000000 00150028  MOV t2.xy__, void, void, t2.xyyy
+0003: 07821018 39002f20 00000000 00000000  TEXLD t2, tex0, t2, void, void
+0004: 00841005 3e403800 01f201c0 00000000  DP3 t4.x___, t3.yzww, t3.yzww, void
+0005: 0084100d 00000000 00000000 00000048  RSQ t4.x___, void, void, t4.xxxx
+0006: 03841003 3e403800 00000240 00000000  MUL t4.xyz_, t3.yzww, t4.xxxx, void
+0007: 00831005 29005800 014802c0 00000000  DP3 t3.x___, t5.xyzz, t5.xyzz, void
+0008: 0083100d 00000000 00000000 00000038  RSQ t3.x___, void, void, t3.xxxx
+0009: 03851003 29005800 000001c0 00000000  MUL t5.xyz_, t5.xyzz, t3.xxxx, void
+0010: 00851005 29004800 014802c0 00000000  DP3 t5.x___, t4.xyzz, t5.xyzz, void
+0011: 0085108f 00005800 000003c0 0000005a  SELECT.LT t5.x___, t5.xxxx, u7.xxxx, t5.xxxx
+0012: 07851003 39002800 000002c0 00000000  MUL t5, t2, t5.xxxx, void
+0013: 07851002 39002800 01c800c0 0039005a  MAD t5, t2, u1, t5
+0014: 03851003 39000800 01c802d0 00000000  MUL t5.xyz_, u0, t5, void
+0015: 03851009 00000000 00000000 00090058  MOV t5.xyz_, void, void, t5.xyzx
+0016: 04051009 00000000 00000000 003fc028  MOV t5.___w, void, void, t2.wwww
+0017: 03841009 00000000 00000000 20090068  MOV t4.xyz_, void, void, u6.xyzx
+0018: 04041009 00000000 00000000 003fc028  MOV t4.___w, void, void, t2.wwww
+0019: 0082100c 00000000 00000000 003fc018  RCP t2.x___, void, void, t1.wwww
+0020: 00821003 2a801800 00000140 00000000  MUL t2.x___, t1.zzzz, t2.xxxx, void
+0021: 00811012 00000000 00000000 00000028  LOG t1.x___, void, void, t2.xxxx
+0022: 00811003 00003800 000000d0 00000000  MUL t1.x___, u3.xxxx, t1.xxxx, void
+0023: 00821011 00000000 00000000 00000018  EXP t2.x___, void, void, t1.xxxx
+0024: 07861009 00000000 00000000 20400058  MOV t6, void, void, -u5.xxxx
+0025: 00821002 00002800 00000240 0039006a  MAD t2.x___, t2.xxxx, u4.xxxx, t6
+0026: 00821809 00000000 00000000 00000028  MOV.SAT t2.x___, void, void, t2.xxxx
+0027: 07861002 00002800 01c802c0 00790058  MAD t6, t2.xxxx, t5, -t5
+0028: 07851002 00002800 01c80240 00790068  MAD t5, t2.xxxx, t4, -t6
+num loops: 0
+num temps: 7
+num const: 28
+immediates:
+ [7].x = 0.000000 (0x00000000)
+ [7].y = 0.000000 (0x00000000)
+ [7].z = 0.000000 (0x00000000)
+ [7].w = 0.000000 (0x00000000)
+ [8].x = 0.000000 (0x00000000)
+ [8].y = 1.000000 (0x3f800000)
+ [8].z = 128.000000 (0x43000000)
+ [8].w = 0.000000 (0x00000000)
+inputs:
+ [1] name=GENERIC index=9 comps=4
+ [2] name=GENERIC index=10 comps=4
+ [3] name=GENERIC index=11 comps=4
+outputs:
+special:
+  ps_color_out_reg=5
+  ps_depth_out_reg=-1
+  input_count_unk8=0x0000001f

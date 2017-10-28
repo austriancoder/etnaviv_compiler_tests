@@ -1,0 +1,56 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], COLOR, COLOR
+DCL IN[1], GENERIC[1], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL SAMP[0]
+DCL SAMP[1]
+DCL CONST[2..10]
+DCL TEMP[0..1], LOCAL
+IMM[0] FLT32 {    2.0000,     1.0000,     0.0000,     0.0000}
+  0: MOV TEMP[0].xy, CONST[10].xyyy
+  1: MOV TEMP[0].w, CONST[10].wwww
+  2: TXP TEMP[0], TEMP[0], SAMP[1], 2D
+  3: MUL TEMP[0].xyz, TEMP[0], IN[0]
+  4: MOV TEMP[0].xyz, TEMP[0].xyzx
+  5: MOV TEMP[0].w, IN[0].wwww
+  6: MOV TEMP[1].xy, IN[1].xyyy
+  7: MOV TEMP[1].w, IN[1].wwww
+  8: TXP TEMP[1], TEMP[1], SAMP[0], 2D
+  9: MUL TEMP[0], TEMP[1], TEMP[0]
+ 10: MUL_SAT TEMP[0], TEMP[0], IMM[0].xxxy
+ 11: MOV OUT[0], TEMP[0]
+ 12: END
+
+FRAG
+0000: 01831009 00000000 00000000 201500a8  MOV t3.xy__, void, void, u10.xyyy
+0001: 04031009 00000000 00000000 203fc0a8  MOV t3.___w, void, void, u10.wwww
+0002: 0404100c 00000000 00000000 003fc038  RCP t4.___w, void, void, t3.wwww
+0003: 03841003 3fc04800 01c801c0 00000000  MUL t4.xyz_, t4.wwww, t3, void
+0004: 0f831018 39004f20 00000000 00000000  TEXLD t3, tex1, t4, void, void
+0005: 03831003 39003800 01c800c0 00000000  MUL t3.xyz_, t3, t1, void
+0006: 03831009 00000000 00000000 00090038  MOV t3.xyz_, void, void, t3.xyzx
+0007: 04031009 00000000 00000000 003fc018  MOV t3.___w, void, void, t1.wwww
+0008: 01811009 00000000 00000000 00150028  MOV t1.xy__, void, void, t2.xyyy
+0009: 04011009 00000000 00000000 003fc028  MOV t1.___w, void, void, t2.wwww
+0010: 0404100c 00000000 00000000 003fc018  RCP t4.___w, void, void, t1.wwww
+0011: 03841003 3fc04800 01c800c0 00000000  MUL t4.xyz_, t4.wwww, t1, void
+0012: 07811018 39004f20 00000000 00000000  TEXLD t1, tex0, t4, void, void
+0013: 07831003 39001800 01c801c0 00000000  MUL t3, t1, t3, void
+0014: 07831803 39003800 008005c0 00000002  MUL.SAT t3, t3, u11.xxxy, void
+num loops: 0
+num temps: 5
+num const: 44
+immediates:
+ [11].x = 2.000000 (0x40000000)
+ [11].y = 1.000000 (0x3f800000)
+ [11].z = 0.000000 (0x00000000)
+ [11].w = 0.000000 (0x00000000)
+inputs:
+ [1] name=COLOR index=0 comps=4
+ [2] name=GENERIC index=1 comps=4
+outputs:
+special:
+  ps_color_out_reg=3
+  ps_depth_out_reg=-1
+  input_count_unk8=0x0000001f

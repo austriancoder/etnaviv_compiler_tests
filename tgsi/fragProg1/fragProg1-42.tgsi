@@ -1,0 +1,9 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL OUT[0], COLOR
+IMM[0] FLT32 {    1.5708,    -1.5708,     0.5000,     1.0000}
+  0: SIN OUT[0].x, IMM[0].xxxx
+  1: SIN OUT[0].y, IMM[0].yyyy
+  2: SIN OUT[0].z, IMM[0].zzzz
+  3: SIN OUT[0].w, IMM[0].wwww
+  4: END

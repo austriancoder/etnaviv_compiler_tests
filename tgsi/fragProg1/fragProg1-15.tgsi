@@ -1,0 +1,9 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL OUT[0], COLOR
+IMM[0] FLT32 {    6.7832,     7.2832,     6.2832,    -5.7832}
+  0: COS OUT[0].x, IMM[0].xxxx
+  1: COS OUT[0].y, IMM[0].yyyy
+  2: COS OUT[0].z, IMM[0].zzzz
+  3: COS OUT[0].w, IMM[0].wwww
+  4: END

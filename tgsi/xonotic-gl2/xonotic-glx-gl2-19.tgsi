@@ -1,0 +1,47 @@
+
+VERT
+DCL IN[0]
+DCL IN[1]
+DCL IN[2]
+DCL IN[3]
+DCL IN[4]
+DCL IN[5]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[20]
+DCL OUT[2], GENERIC[21]
+DCL OUT[3], GENERIC[22]
+DCL OUT[4], GENERIC[23]
+DCL OUT[5], GENERIC[24]
+DCL CONST[0..8]
+DCL TEMP[0..5], LOCAL
+IMM[0] FLT32 {    0.0000,     0.0000,     0.0000,     0.0000}
+  0: MUL TEMP[0], CONST[5], IN[1].xxxx
+  1: MAD TEMP[0], CONST[6], IN[1].yyyy, TEMP[0]
+  2: MAD TEMP[0], CONST[7], IN[1].zzzz, TEMP[0]
+  3: MAD TEMP[0].xy, CONST[8], IN[1].wwww, TEMP[0]
+  4: MOV TEMP[0].xy, TEMP[0].xyxx
+  5: MOV TEMP[0].zw, IN[5].yyxy
+  6: ADD TEMP[1].xyz, CONST[4].xyzz, -IN[0].xyzz
+  7: DP3 TEMP[2].x, TEMP[1].xyzz, IN[2].xyzz
+  8: DP3 TEMP[3].x, TEMP[1].xyzz, IN[3].xyzz
+  9: MOV TEMP[2].y, TEMP[3].xxxx
+ 10: DP3 TEMP[1].x, TEMP[1].xyzz, IN[4].xyzz
+ 11: MOV TEMP[2].z, TEMP[1].xxxx
+ 12: MOV TEMP[2].w, IMM[0].xxxx
+ 13: MOV TEMP[1].w, IMM[0].xxxx
+ 14: MOV TEMP[1].xyz, IN[2].xyzx
+ 15: MOV TEMP[3].w, IMM[0].xxxx
+ 16: MOV TEMP[3].xyz, IN[3].xyzx
+ 17: MOV TEMP[4].w, IMM[0].xxxx
+ 18: MOV TEMP[4].xyz, IN[4].xyzx
+ 19: MUL TEMP[5], CONST[0], IN[0].xxxx
+ 20: MAD TEMP[5], CONST[1], IN[0].yyyy, TEMP[5]
+ 21: MAD TEMP[5], CONST[2], IN[0].zzzz, TEMP[5]
+ 22: MAD TEMP[5], CONST[3], IN[0].wwww, TEMP[5]
+ 23: MOV OUT[5], TEMP[4]
+ 24: MOV OUT[3], TEMP[1]
+ 25: MOV OUT[0], TEMP[5]
+ 26: MOV OUT[4], TEMP[3]
+ 27: MOV OUT[2], TEMP[2]
+ 28: MOV OUT[1], TEMP[0]
+ 29: END

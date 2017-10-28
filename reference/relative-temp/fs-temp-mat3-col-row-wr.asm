@@ -1,0 +1,90 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL OUT[0], COLOR
+DCL CONST[0..7]
+DCL TEMP[0..2], ARRAY(1), LOCAL
+DCL TEMP[3..4], LOCAL
+DCL ADDR[0]
+IMM[0] FLT32 {    0.0000,     1.0000,     2.0000,     0.0000}
+  0: MOV TEMP[0], CONST[0].xyzz
+  1: MOV TEMP[1], CONST[1].xyzz
+  2: MOV TEMP[2], CONST[2].xyzz
+  3: ARL ADDR[0].x, CONST[6].xxxx
+  4: MOV TEMP[3].xyz, CONST[ADDR[0].x].xyzx
+  5: SEQ TEMP[4].x, CONST[5].xxxx, IMM[0].xxxx
+  6: IF TEMP[4].xxxx :0
+  7:   MOV TEMP[3].x, CONST[7].xxxx
+  8: ENDIF
+  9: SEQ TEMP[4].x, CONST[5].xxxx, IMM[0].yyyy
+ 10: IF TEMP[4].xxxx :0
+ 11:   MOV TEMP[3].y, CONST[7].xxxx
+ 12: ENDIF
+ 13: SEQ TEMP[4].x, CONST[5].xxxx, IMM[0].zzzz
+ 14: IF TEMP[4].xxxx :0
+ 15:   MOV TEMP[3].z, CONST[7].xxxx
+ 16: ENDIF
+ 17: ARL ADDR[0].x, CONST[6].xxxx
+ 18: MOV TEMP[ADDR[0].x](1).xyz, TEMP[3].xyzx
+ 19: MUL TEMP[3].xyz, TEMP[0].xyzz, CONST[3].xxxx
+ 20: MAD TEMP[3].xyz, TEMP[1].xyzz, CONST[3].yyyy, TEMP[3].xyzz
+ 21: MAD TEMP[3].xyz, TEMP[2].xyzz, CONST[3].zzzz, TEMP[3].xyzz
+ 22: ADD TEMP[3].xyz, TEMP[3].xyzz, -CONST[4].xyzz
+ 23: DP3 TEMP[3].x, TEMP[3].xyzz, TEMP[3].xyzz
+ 24: SLT TEMP[3].x, TEMP[3].xxxx, IMM[0].wwww
+ 25: IF TEMP[3].xxxx :0
+ 26:   MOV TEMP[3], IMM[0].xyxy
+ 27: ELSE :0
+ 28:   MOV TEMP[3], IMM[0].yxxy
+ 29: ENDIF
+ 30: MOV OUT[0], TEMP[3]
+ 31: END
+
+
+
+FRAG
+0000: 07811009 00000000 00000000 20290008  MOV t1, void, void, u0.xyzz
+0001: 07821009 00000000 00000000 20290018  MOV t2, void, void, u1.xyzz
+0002: 07831009 00000000 00000000 20290028  MOV t3, void, void, u2.xyzz
+0003: 07861025 00000000 00000000 20000068  FLOOR t6, void, void, u6.xxxx
+0004: 0080000a 00000000 00000000 00390068  MOVAR a0.x___, void, void, t6
+0005: 03841009 00000000 00000000 22090008  MOV t4.xyz_, void, void, u0[a.x].xyzx
+0006: 07861009 00000000 00000000 20000088  MOV t6, void, void, u8.xxxx
+0007: 00851150 00005800 01c80350 00000000  SET.EQ t5.x___, u5.xxxx, t6, void
+0008: 00000156 00005800 00000440 00000502  BRANCH.EQ void, t5.xxxx, u8.xxxx, label_0010
+0009: 00841009 00000000 00000000 20000078  MOV t4.x___, void, void, u7.xxxx
+0010: 07861009 00000000 00000000 20154088  MOV t6, void, void, u8.yyyy
+0011: 00851150 00005800 01c80350 00000000  SET.EQ t5.x___, u5.xxxx, t6, void
+0012: 00000156 00005800 00000440 00000702  BRANCH.EQ void, t5.xxxx, u8.xxxx, label_0014
+0013: 01041009 00000000 00000000 20000078  MOV t4._y__, void, void, u7.xxxx
+0014: 07861009 00000000 00000000 202a8088  MOV t6, void, void, u8.zzzz
+0015: 00851150 00005800 01c80350 00000000  SET.EQ t5.x___, u5.xxxx, t6, void
+0016: 00000156 00005800 00000440 00000902  BRANCH.EQ void, t5.xxxx, u8.xxxx, label_0018
+0017: 02041009 00000000 00000000 20000078  MOV t4.__z_, void, void, u7.xxxx
+0018: 07861025 00000000 00000000 20000068  FLOOR t6, void, void, u6.xxxx
+0019: 0080000a 00000000 00000000 00390068  MOVAR a0.x___, void, void, t6
+0020: 03813009 00000000 00000000 00090048  MOV t1[a.x].xyz_, void, void, t4.xyzx
+0021: 03841003 29001800 000001c0 00000002  MUL t4.xyz_, t1.xyzz, u3.xxxx, void
+0022: 03841002 29002800 00aa01c0 0029004a  MAD t4.xyz_, t2.xyzz, u3.yyyy, t4.xyzz
+0023: 03841002 29003800 015401c0 0029004a  MAD t4.xyz_, t3.xyzz, u3.zzzz, t4.xyzz
+0024: 03841001 29004800 00000000 20690048  ADD t4.xyz_, t4.xyzz, void, -u4.xyzz
+0025: 00841005 29004800 01480240 00000000  DP3 t4.x___, t4.xyzz, t4.xyzz, void
+0026: 00841090 00004800 01fe0440 00000002  SET.LT t4.x___, t4.xxxx, u8.wwww, void
+0027: 00000156 00004800 00000440 00000f02  BRANCH.EQ void, t4.xxxx, u8.xxxx, label_0030
+0028: 07841009 00000000 00000000 20110088  MOV t4, void, void, u8.xyxy
+0029: 00000016 00000000 00000000 00000f80  BRANCH void, void, void, label_0031
+0030: 07841009 00000000 00000000 20104088  MOV t4, void, void, u8.yxxy
+0031: 00000000 00000000 00000000 00000000  NOP void, void, void, void
+num loops: 0
+num temps: 7
+num const: 32
+immediates:
+ [8].x = 0.000000 (0x00000000)
+ [8].y = 1.000000 (0x3f800000)
+ [8].z = 2.000000 (0x40000000)
+ [8].w = 0.000000 (0x00000000)
+inputs:
+outputs:
+special:
+  ps_color_out_reg=4
+  ps_depth_out_reg=-1
+  input_count_unk8=0x0000001f

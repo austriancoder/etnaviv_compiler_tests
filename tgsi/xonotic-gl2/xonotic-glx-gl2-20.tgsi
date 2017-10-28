@@ -1,0 +1,28 @@
+
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], GENERIC[20], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL SAMP[0]
+DCL SAMP[1]
+DCL SAMP[2]
+DCL SAMP[3]
+DCL CONST[4..8]
+DCL TEMP[0..3], LOCAL
+  0: MOV TEMP[0].xy, IN[0].xyyy
+  1: TEX TEMP[0], TEMP[0], SAMP[0], 2D
+  2: MUL TEMP[1].x, TEMP[0].wwww, CONST[8].xxxx
+  3: MOV TEMP[1].w, TEMP[1].xxxx
+  4: MOV TEMP[2].xy, IN[0].xyyy
+  5: TEX TEMP[2].xyz, TEMP[2], SAMP[3], 2D
+  6: MOV TEMP[3].xy, IN[0].xyyy
+  7: TEX TEMP[3].xyz, TEMP[3], SAMP[2], 2D
+  8: MUL TEMP[3].xyz, TEMP[3].xyzz, CONST[4].xyzz
+  9: MAD TEMP[2].xyz, TEMP[2].xyzz, CONST[5].xyzz, TEMP[3].xyzz
+ 10: ADD TEMP[1].xyz, TEMP[0].xyzz, TEMP[2].xyzz
+ 11: MUL TEMP[1].xyz, TEMP[1].xyzz, CONST[6].xyzz
+ 12: MOV TEMP[0].xy, IN[0].xyyy
+ 13: TEX TEMP[0].xyz, TEMP[0], SAMP[1], 2D
+ 14: MAD TEMP[1].xyz, TEMP[0].xyzz, CONST[7].xyzz, TEMP[1].xyzz
+ 15: MOV OUT[0], TEMP[1]
+ 16: END

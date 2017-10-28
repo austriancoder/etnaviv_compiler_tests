@@ -1,0 +1,61 @@
+VERT
+DCL IN[0]
+DCL OUT[0], POSITION
+DCL OUT[1], COLOR
+DCL OUT[2], COLOR[1]
+DCL OUT[3], BCOLOR
+DCL OUT[4], BCOLOR[1]
+DCL CONST[0..9]
+DCL CONST[11..24]
+DCL TEMP[0..11]
+IMM[0] FLT32 {    0.0000,     1.0000,     0.0000,     0.0000}
+  0: MUL TEMP[0], IN[0].xxxx, CONST[0]
+  1: MAD TEMP[0], IN[0].yyyy, CONST[1], TEMP[0]
+  2: MAD TEMP[0], IN[0].zzzz, CONST[2], TEMP[0]
+  3: MAD OUT[0], IN[0].wwww, CONST[3], TEMP[0]
+  4: DP3 TEMP[0].x, CONST[4], CONST[5]
+  5: DP3 TEMP[0].y, CONST[4], CONST[6]
+  6: DP3 TEMP[0].z, CONST[4], CONST[7]
+  7: MOV TEMP[1].w, CONST[8].xxxx
+  8: MOV TEMP[2], CONST[9]
+  9: MOV TEMP[3], IMM[0].xxxy
+ 10: MOV TEMP[1].z, -CONST[11].xxxx
+ 11: MOV TEMP[4], CONST[12]
+ 12: MOV TEMP[5], IMM[0].xxxy
+ 13: MOV_SAT OUT[1], TEMP[2]
+ 14: MOV_SAT OUT[2], TEMP[3]
+ 15: MOV_SAT OUT[3], TEMP[4]
+ 16: MOV_SAT OUT[4], TEMP[5]
+ 17: MUL TEMP[6], IN[0].xxxx, CONST[14]
+ 18: MAD TEMP[6], IN[0].yyyy, CONST[15], TEMP[6]
+ 19: MAD TEMP[6], IN[0].zzzz, CONST[16], TEMP[6]
+ 20: MAD TEMP[6], IN[0].wwww, CONST[17], TEMP[6]
+ 21: SUB TEMP[7], CONST[13], TEMP[6]
+ 22: DP3 TEMP[8], TEMP[7], TEMP[7]
+ 23: RSQ TEMP[8], |TEMP[8]|
+ 24: MUL TEMP[7], TEMP[7], TEMP[8]
+ 25: RCP TEMP[8].yz, TEMP[8]
+ 26: MUL TEMP[8].xz, TEMP[8], TEMP[8].yyyy
+ 27: DP3 TEMP[8], CONST[18], TEMP[8]
+ 28: RCP TEMP[9], TEMP[8]
+ 29: ADD TEMP[8], TEMP[7], IMM[0].xxyx
+ 30: DP3 TEMP[10].x, TEMP[8], TEMP[8]
+ 31: RSQ TEMP[10].x, |TEMP[10]|
+ 32: MUL TEMP[8], TEMP[8], TEMP[10].xxxx
+ 33: DP3 TEMP[1].x, TEMP[0], TEMP[7]
+ 34: DP3 TEMP[1].y, TEMP[0], TEMP[8]
+ 35: LIT TEMP[11], TEMP[1]
+ 36: MUL TEMP[11], TEMP[11], TEMP[9]
+ 37: MAD TEMP[2], TEMP[11].xxxx, CONST[19], TEMP[2]
+ 38: MAD_SAT OUT[1].xyz, TEMP[11].yyyy, CONST[20], TEMP[2]
+ 39: MAD_SAT OUT[2].xyz, TEMP[11].zzzz, CONST[21], TEMP[3]
+ 40: LIT TEMP[11], -TEMP[1].xywz
+ 41: MUL TEMP[11], TEMP[11], TEMP[9]
+ 42: MAD TEMP[4], TEMP[11].xxxx, CONST[22], TEMP[4]
+ 43: MAD_SAT OUT[3].xyz, TEMP[11].yyyy, CONST[23], TEMP[4]
+ 44: MAD_SAT OUT[4].xyz, TEMP[11].zzzz, CONST[24], TEMP[5]
+ 45: END
+
+
+TGSI asm error: Unknown opcode [33 : 7] 
+etnaviv_compiler: could not parse `tgsi/maniadrive/maniadrive-14.tgsi'

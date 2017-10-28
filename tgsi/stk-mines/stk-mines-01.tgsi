@@ -1,0 +1,26 @@
+VERT
+DCL IN[0]
+DCL IN[1]
+DCL IN[2]
+DCL IN[3]
+DCL IN[4]
+DCL IN[5]
+DCL IN[6]
+DCL OUT[0], POSITION
+DCL OUT[1], COLOR
+DCL OUT[2], GENERIC[0]
+DCL CONST[0..7]
+DCL TEMP[0..2]
+  0: MUL TEMP[0], IN[0].xxxx, CONST[0]
+  1: MAD TEMP[0], IN[0].yyyy, CONST[1], TEMP[0]
+  2: MAD TEMP[0], IN[0].zzzz, CONST[2], TEMP[0]
+  3: MAD OUT[0], IN[0].wwww, CONST[3], TEMP[0]
+  4: DP3 TEMP[0].x, IN[1], CONST[4]
+  5: DP3 TEMP[0].y, IN[1], CONST[5]
+  6: DP3 TEMP[0].z, IN[1], CONST[6]
+  7: MOV TEMP[1].w, IN[6].xxxx
+  8: MOV TEMP[2], IN[2]
+  9: MAD TEMP[2].xyz, CONST[7], IN[4], IN[5]
+ 10: MOV_SAT OUT[1], TEMP[2]
+ 11: MOV OUT[2], IN[3]
+ 12: END

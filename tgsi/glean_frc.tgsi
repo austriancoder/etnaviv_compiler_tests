@@ -1,0 +1,12 @@
+VERT
+DCL IN[0]
+DCL OUT[0], POSITION
+DCL OUT[1], COLOR
+DCL TEMP[0]
+IMM[0] FLT32 {    4.8000,     0.3000,    -0.2000,     1.2000}
+IMM[1] FLT32 {    0.1000,     0.0000,     0.0000,     0.0000}
+  0: MOV OUT[0], IN[0]
+  1: FLR TEMP[0], IMM[0]
+  2: MUL_SAT OUT[1], TEMP[0], IMM[1].xxxx
+  3: END
+

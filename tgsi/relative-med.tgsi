@@ -1,0 +1,17 @@
+VERT
+DCL IN[0]
+DCL OUT[0], POSITION
+DCL OUT[1], COLOR
+DCL CONST[0..4]
+DCL ADDR[0]
+  0: MOV OUT[0], IN[0]
+  1: ARL ADDR[0].x, CONST[4].xxxx
+  2: MOV_SAT OUT[1].x, CONST[ADDR[0].x+1]
+  3: ARL ADDR[0].x, CONST[4].yyyy
+  4: MOV_SAT OUT[1].y, CONST[ADDR[0].x+1]
+  5: ARL ADDR[0].x, CONST[4].zzzz
+  6: MOV_SAT OUT[1].z, CONST[ADDR[0].x+1]
+  7: ARL ADDR[0].x, CONST[4].wwww
+  8: MOV_SAT OUT[1].w, CONST[ADDR[0].x+1]
+  9: END
+

@@ -1,0 +1,10 @@
+FRAG
+DCL IN[0], POSITION, LINEAR
+DCL OUT[0], POSITION
+DCL CONST[0]
+DCL TEMP[0]
+  0: MOV TEMP[0], IN[0]
+  1: MAD TEMP[0].y, IN[0], CONST[0].xxxx, CONST[0].yyyy
+  2: MOV OUT[0].z, TEMP[0].zzzz
+  3: END
+

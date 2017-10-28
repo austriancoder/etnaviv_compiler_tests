@@ -1,0 +1,99 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], GENERIC[20], PERSPECTIVE
+DCL IN[1], GENERIC[21], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL CONST[0..3]
+DCL TEMP[0..6], LOCAL
+IMM[0] FLT32 {    1.0000,     0.0000,     0.2000,     0.5628}
+IMM[1] FLT32 {    0.7502,    -1.0000,     0.0250,     0.0500}
+IMM[2] FLT32 {    1.4427,     2.0000,     1.0000,  -288.5390}
+IMM[3] FLT32 {   -0.1667,    10.0000,     0.0000,     0.0000}
+IMM[4] FLT32 {    0.0000,     1.0000,   128.0000,     0.0000}
+DCL TEMP[7]
+DCL TEMP[8]
+  0: MOV TEMP[0].x, IN[0].wwww
+  1: MOV TEMP[0].yz, IN[1].yxyy
+  2: DDX TEMP[1].xyz, IN[0].xyzz
+  3: MUL TEMP[2], CONST[3].xxxx, IN[0].xyzz
+  4: DDY TEMP[2].xyz, TEMP[2]
+  5: DDX TEMP[3].xyz, TEMP[0].xyzz
+  6: MUL TEMP[4], CONST[3].xxxx, TEMP[0].xyzz
+  7: DDY TEMP[4].xyz, TEMP[4]
+  8: MOV TEMP[5].yzw, IMM[0].yxyy
+  9: MUL TEMP[7].x, TEMP[1].xxxx, TEMP[1].xxxx
+ 10: MAD TEMP[7].x, TEMP[1].yyyy, TEMP[1].yyyy, TEMP[7].xxxx
+ 11: MAD TEMP[1].x, TEMP[1].zzzz, TEMP[1].zzzz, TEMP[7].xxxx
+ 12: SQRT TEMP[1].x, TEMP[1].xxxx
+ 13: MUL TEMP[7].x, TEMP[2].xxxx, TEMP[2].xxxx
+ 14: MAD TEMP[7].x, TEMP[2].yyyy, TEMP[2].yyyy, TEMP[7].xxxx
+ 15: MAD TEMP[2].x, TEMP[2].zzzz, TEMP[2].zzzz, TEMP[7].xxxx
+ 16: SQRT TEMP[2].x, TEMP[2].xxxx
+ 17: MUL TEMP[1].x, TEMP[1].xxxx, TEMP[2].xxxx
+ 18: MUL TEMP[7].x, TEMP[3].xxxx, TEMP[3].xxxx
+ 19: MAD TEMP[7].x, TEMP[3].yyyy, TEMP[3].yyyy, TEMP[7].xxxx
+ 20: MAD TEMP[2].x, TEMP[3].zzzz, TEMP[3].zzzz, TEMP[7].xxxx
+ 21: SQRT TEMP[2].x, TEMP[2].xxxx
+ 22: MUL TEMP[7].x, TEMP[4].xxxx, TEMP[4].xxxx
+ 23: MAD TEMP[7].x, TEMP[4].yyyy, TEMP[4].yyyy, TEMP[7].xxxx
+ 24: MAD TEMP[3].x, TEMP[4].zzzz, TEMP[4].zzzz, TEMP[7].xxxx
+ 25: SQRT TEMP[3].x, TEMP[3].xxxx
+ 26: MUL TEMP[2].x, TEMP[2].xxxx, TEMP[3].xxxx
+ 27: RCP TEMP[2].x, TEMP[2].xxxx
+ 28: MUL TEMP[1].x, TEMP[1].xxxx, TEMP[2].xxxx
+ 29: MUL TEMP[5].x, TEMP[1].xxxx, IMM[0].zzzz
+ 30: MOV TEMP[1].zw, TEMP[5]
+ 31: MOV TEMP[2].xyz, -CONST[0].xyzx
+ 32: MUL TEMP[3].x, TEMP[2].yyyy, TEMP[2].yyyy
+ 33: ADD TEMP[3].x, IMM[0].xxxx, -TEMP[3].xxxx
+ 34: MUL TEMP[3].x, TEMP[3].xxxx, IMM[0].wwww
+ 35: ADD TEMP[3].x, IMM[0].xxxx, -TEMP[3].xxxx
+ 36: SLT TEMP[4].x, TEMP[3].xxxx, IMM[0].yyyy
+ 37: IF TEMP[4].xxxx :0
+ 38:   MOV TEMP[4].xyz, IMM[0].yyyy
+ 39: ELSE :0
+ 40:   SQRT TEMP[3].x, TEMP[3].xxxx
+ 41:   MAD TEMP[3].x, IMM[1].xxxx, TEMP[2].yyyy, TEMP[3].xxxx
+ 42:   MUL TEMP[3].xyz, TEMP[3].xxxx, IMM[0].yxyy
+ 43:   MAD TEMP[4].xyz, IMM[1].xxxx, TEMP[2].xyzz, -TEMP[3].xyzz
+ 44: ENDIF
+ 45: MOV TEMP[0].xyz, -TEMP[0].xyzx
+ 46: ADD TEMP[2].xyz, CONST[1].xyzz, TEMP[0].xyzz
+ 47: RCP TEMP[3].x, CONST[2].xxxx
+ 48: MUL TEMP[2].xyz, TEMP[2].xyzz, TEMP[3].xxxx
+ 49: MUL TEMP[3].xyz, TEMP[2].zxyy, TEMP[4].yzxx
+ 50: MAD TEMP[3].xyz, TEMP[2].yzxx, TEMP[4].zxyy, -TEMP[3].xyzz
+ 51: MUL TEMP[7].x, TEMP[2].xxxx, -TEMP[4].xxxx
+ 52: MAD TEMP[7].x, TEMP[2].yyyy, -TEMP[4].yyyy, TEMP[7].xxxx
+ 53: MAD TEMP[2].x, TEMP[2].zzzz, -TEMP[4].zzzz, TEMP[7].xxxx
+ 54: MUL TEMP[7].x, TEMP[3].xxxx, TEMP[3].xxxx
+ 55: MAD TEMP[7].x, TEMP[3].yyyy, TEMP[3].yyyy, TEMP[7].xxxx
+ 56: MAD TEMP[3].x, TEMP[3].zzzz, TEMP[3].zzzz, TEMP[7].xxxx
+ 57: ADD TEMP[3].x, TEMP[3].xxxx, IMM[1].yyyy
+ 58: MAD TEMP[6].x, TEMP[2].xxxx, IMM[1].zzzz, IMM[1].wwww
+ 59: RCP TEMP[6].x, TEMP[6].xxxx
+ 60: MAD TEMP[3].x, TEMP[3].xxxx, TEMP[6].xxxx, IMM[0].xxxx
+ 61: MUL TEMP[3].x, -TEMP[3].xxxx, IMM[2].xxxx
+ 62: EX2 TEMP[3].x, TEMP[3].xxxx
+ 63: ADD TEMP[3].x, IMM[0].xxxx, TEMP[3].xxxx
+ 64: RCP TEMP[3].x, TEMP[3].xxxx
+ 65: MOV_SAT TEMP[3].x, TEMP[3].xxxx
+ 66: MUL_SAT TEMP[2].x, TEMP[2].xxxx, IMM[2].yyyy
+ 67: MUL TEMP[7], TEMP[2].xxxx, TEMP[3].xxxx
+ 68: SUB TEMP[8], IMM[4].yyyy, TEMP[2].xxxx
+ 69: MUL TEMP[8], TEMP[8], IMM[0].xxxx
+ 70: ADD TEMP[2].x, TEMP[7], TEMP[8]
+ 71: MOV TEMP[1].y, TEMP[2].xxxx
+ 72: MOV TEMP[2].xyz, -TEMP[4].xyzx
+ 73: ADD TEMP[3].xyz, IMM[1].yyyy, TEMP[0].xyzz
+ 74: RCP TEMP[6].x, TEMP[2].xxxx
+ 75: RCP TEMP[6].y, TEMP[2].yyyy
+ 76: RCP TEMP[6].z, TEMP[2].zzzz
+ 77: MUL TEMP[3].xyz, TEMP[3].xyzz, TEMP[6].xyzz
+ 78: ADD TEMP[0].xyz, IMM[2].zyzz, TEMP[0].xyzz
+ 79: RCP TEMP[6].x, TEMP[2].xxxx
+ 80: RCP TEMP[6].y, TEMP[2].yyyy
+ 81: RCP TEMP[6].z, TEMP[2].zzzz
+ 82
+TGSI asm error: Unknown opcode [83 : 7] 
+etnaviv_compiler: could not parse `tgsi/dd.tgsi'

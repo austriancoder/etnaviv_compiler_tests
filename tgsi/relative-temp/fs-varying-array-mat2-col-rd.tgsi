@@ -1,0 +1,23 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], GENERIC[10], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL CONST[0..1]
+DCL TEMP[0..1], ARRAY(1), LOCAL
+DCL TEMP[2], LOCAL
+DCL ADDR[0]
+IMM[0] FLT32 {    0.0000,     1.0000,     0.0000,     0.0000}
+  0: MOV TEMP[0].xy, IN[0].xyxx
+  1: MOV TEMP[1].xy, IN[0].zwzz
+  2: ARL ADDR[0].x, CONST[0].xxxx
+  3: SNE TEMP[2], TEMP[ADDR[0].x](1).xyyy, CONST[1].xyyy
+  4: DP2 TEMP[2].x, TEMP[2], TEMP[2]
+  5: SGE TEMP[2].x, -TEMP[2].xxxx, IMM[0].xxxx
+  6: IF TEMP[2].xxxx :0
+  7:   MOV TEMP[2], IMM[0].xyxy
+  8: ELSE :0
+  9:   MOV TEMP[2], IMM[0].yxxy
+ 10: ENDIF
+ 11: MOV OUT[0], TEMP[2]
+ 12: END
+

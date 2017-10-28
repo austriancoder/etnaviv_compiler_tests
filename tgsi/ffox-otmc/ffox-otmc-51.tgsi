@@ -1,0 +1,59 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], GENERIC[9], PERSPECTIVE
+DCL IN[1], GENERIC[10], PERSPECTIVE
+DCL IN[2], GENERIC[11], PERSPECTIVE
+DCL IN[3], GENERIC[12], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL SAMP[0]
+DCL CONST[0..1]
+DCL CONST[3..9]
+DCL TEMP[0..4], LOCAL
+IMM[0] FLT32 {    0.3000,     0.0000,     0.0000,     0.0000}
+  0: MOV TEMP[0].xy, IN[1].zwzz
+  1: MOV TEMP[0].z, IN[2].xxxx
+  2: MOV TEMP[1].xy, IN[1].xyyy
+  3: TEX TEMP[1], TEMP[1], SAMP[0], 2D
+  4: SLT TEMP[2].x, TEMP[1].wwww, IMM[0].xxxx
+  5: IF TEMP[2].xxxx :0
+  6:   KILL
+  7: ENDIF
+  8: DP3 TEMP[2].x, IN[2].yzww, IN[2].yzww
+  9: RSQ TEMP[2].x, TEMP[2].xxxx
+ 10: MUL TEMP[2].xyz, IN[2].yzww, TEMP[2].xxxx
+ 11: DP3 TEMP[3].x, TEMP[0].xyzz, TEMP[0].xyzz
+ 12: RSQ TEMP[3].x, TEMP[3].xxxx
+ 13: MUL TEMP[0].xyz, TEMP[0].xyzz, TEMP[3].xxxx
+ 14: DP3 TEMP[3].x, IN[3].xyzz, IN[3].xyzz
+ 15: RSQ TEMP[3].x, TEMP[3].xxxx
+ 16: MAD TEMP[3].xyz, IN[3].xyzz, TEMP[3].xxxx, TEMP[0].xyzz
+ 17: DP3 TEMP[0].x, TEMP[2].xyzz, TEMP[0].xyzz
+ 18: DP3 TEMP[4].x, TEMP[3].xyzz, TEMP[3].xyzz
+ 19: RSQ TEMP[4].x, TEMP[4].xxxx
+ 20: MUL TEMP[3].xyz, TEMP[3].xyzz, TEMP[4].xxxx
+ 21: DP3 TEMP[2].x, TEMP[2].xyzz, TEMP[3].xyzz
+ 22: MAX TEMP[3].x, TEMP[0].xxxx, IMM[0].yyyy
+ 23: SLT TEMP[0].x, IMM[0].yyyy, TEMP[0].xxxx
+ 24: IF TEMP[0].xxxx :0
+ 25:   MAX TEMP[0].x, IMM[0].yyyy, TEMP[2].xxxx
+ 26:   POW TEMP[0].x, TEMP[0].xxxx, CONST[4].xxxx
+ 27: ELSE :0
+ 28:   MOV TEMP[0].x, IMM[0].yyyy
+ 29: ENDIF
+ 30: MUL TEMP[0], CONST[3], TEMP[0].xxxx
+ 31: MUL TEMP[2], TEMP[1], TEMP[3].xxxx
+ 32: MAD TEMP[2], TEMP[1], CONST[1], TEMP[2]
+ 33: MAD TEMP[0], TEMP[0], CONST[5].xxxx, TEMP[2]
+ 34: MUL TEMP[0].xyz, CONST[0], TEMP[0]
+ 35: MOV TEMP[0].xyz, TEMP[0].xyzx
+ 36: MOV TEMP[0].w, TEMP[1].wwww
+ 37: MOV TEMP[2].xyz, CONST[9].xyzx
+ 38: MOV TEMP[2].w, TEMP[1].wwww
+ 39: RCP TEMP[1].x, IN[0].wwww
+ 40: MUL TEMP[1].x, IN[0].zzzz, TEMP[1].xxxx
+ 41: POW TEMP[1].x, TEMP[1].xxxx, CONST[6].xxxx
+ 42: MAD TEMP[1].x, TEMP[1].xxxx, CONST[7].xxxx, -CONST[8].xxxx
+ 43: MOV_SAT TEMP[1].x, TEMP[1].xxxx
+ 44: LRP TEMP[0], TEMP[1].xxxx, TEMP[2], TEMP[0]
+ 45: MOV OUT[0], TEMP[0]
+ 46: END

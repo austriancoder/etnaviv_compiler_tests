@@ -1,0 +1,31 @@
+VERT
+DCL IN[0]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[20]
+DCL CONST[0..19]
+DCL TEMP[0..3], LOCAL
+DCL ADDR[0]
+IMM[0] FLT32 {    4.0000,     0.0000,     1.0000,     2.0000}
+IMM[1] FLT32 {    0.0000,     1.0000,     2.0000,     3.0000}
+  0: MUL TEMP[0], CONST[16], IN[0].xxxx
+  1: MAD TEMP[0], CONST[17], IN[0].yyyy, TEMP[0]
+  2: MAD TEMP[0], CONST[18], IN[0].zzzz, TEMP[0]
+  3: MAD TEMP[0], CONST[19], IN[0].wwww, TEMP[0]
+  4: MUL TEMP[1].x, CONST[0].xxxx, IMM[0].xxxx
+  5: ADD TEMP[1].x, CONST[1].xxxx, TEMP[1].xxxx
+  6: ARL ADDR[0].x, TEMP[1].xxxx
+  7: MOV TEMP[1], CONST[ADDR[0].x+4]
+  8: SEQ TEMP[2].yzw, CONST[2].xxxx, IMM[1]
+  9: CMP TEMP[3].x, -TEMP[2].yyyy, TEMP[1].yyyy, TEMP[1].xxxx
+ 10: CMP TEMP[3].x, -TEMP[2].zzzz, TEMP[1].zzzz, TEMP[3].xxxx
+ 11: CMP TEMP[3].x, -TEMP[2].wwww, TEMP[1].wwww, TEMP[3].xxxx
+ 12: SEQ TEMP[1].x, TEMP[3].xxxx, CONST[3].xxxx
+ 13: IF TEMP[1].xxxx :0
+ 14:   MOV TEMP[1], IMM[0].yzyz
+ 15: ELSE :0
+ 16:   MOV TEMP[1], IMM[0].zyyz
+ 17: ENDIF
+ 18: MOV OUT[1], TEMP[1]
+ 19: MOV OUT[0], TEMP[0]
+ 20: END
+

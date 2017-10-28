@@ -1,0 +1,14 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL OUT[0], COLOR
+DCL SAMP[0]
+DCL CONST[1..9]
+DCL TEMP[0..1], LOCAL
+  0: MOV TEMP[0].xyz, CONST[4].xyzx
+  1: MOV TEMP[1].xy, CONST[9].xyyy
+  2: MOV TEMP[1].w, CONST[9].wwww
+  3: TXP TEMP[1].w, TEMP[1], SAMP[0], 2D
+  4: MUL TEMP[1].x, TEMP[1].wwww, CONST[4].wwww
+  5: MOV TEMP[0].w, TEMP[1].xxxx
+  6: MOV OUT[0], TEMP[0]
+  7: END

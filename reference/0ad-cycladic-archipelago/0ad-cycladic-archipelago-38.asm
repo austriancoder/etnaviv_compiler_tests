@@ -1,0 +1,175 @@
+FRAG
+PROPERTY FS_COORD_PIXEL_CENTER INTEGER
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], POSITION, LINEAR
+DCL IN[1], GENERIC[9], PERSPECTIVE
+DCL IN[2], GENERIC[10], PERSPECTIVE
+DCL IN[3], GENERIC[11], PERSPECTIVE
+DCL IN[4], GENERIC[12], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL SAMP[0]
+DCL SAMP[1]
+DCL SAMP[2]
+DCL SAMP[3]
+DCL CONST[7..8]
+DCL CONST[4..6]
+DCL TEMP[0]
+DCL TEMP[1..8], LOCAL
+IMM[0] FLT32 {    0.5000,     0.0000,     1.0000,    -0.0005}
+IMM[1] FLT32 {   -0.5000,     2.0000,     1.0000,     1.4427}
+IMM[2] FLT32 {    0.1111,     0.0300,     0.0000,     0.0000}
+  0: ADD TEMP[0], IN[0], IMM[0].xxyy
+  1: MAD TEMP[0].y, TEMP[0], CONST[8].xxxx, CONST[8].yyyy
+  2: MOV TEMP[1].xy, IN[3].zwzz
+  3: MOV TEMP[1].z, IN[4].xxxx
+  4: MOV TEMP[2].xy, IN[2].xyyy
+  5: TEX TEMP[2].w, TEMP[2], SAMP[1], 2D
+  6: ADD TEMP[2].x, IMM[0].zzzz, -TEMP[2].wwww
+  7: MOV TEMP[2].w, TEMP[2].xxxx
+  8: MOV TEMP[3].xy, IN[3].xyyy
+  9: TEX TEMP[3].xyz, TEMP[3], SAMP[0], 2D
+ 10: ADD TEMP[4].x, IN[1].zzzz, IMM[0].wwww
+ 11: ADD TEMP[5].xy, IN[1].xyyy, IMM[1].xxxx
+ 12: FRC TEMP[5].xy, TEMP[5].xyyy
+ 13: ADD TEMP[6].xy, TEMP[5].xyyy, IMM[0].zzzz
+ 14: ADD TEMP[7].xy, IMM[1].yyyy, -TEMP[5].xyyy
+ 15: MOV TEMP[6].zw, TEMP[7].yyxy
+ 16: MUL TEMP[5].xy, IMM[0].xxxx, TEMP[5].xyyy
+ 17: ADD TEMP[5].xy, IN[1].xyyy, -TEMP[5].xyyy
+ 18: ADD TEMP[5], IMM[1].zzxx, TEMP[5].xyxy
+ 19: MUL TEMP[5], TEMP[5], CONST[4].zwzw
+ 20: MOV TEMP[7].xy, TEMP[5].zwww
+ 21: MOV TEMP[7].z, TEMP[4].xxxx
+ 22: TEX TEMP[7].x, TEMP[7], SAMP[3], SHADOW2D
+ 23: MOV TEMP[7].x, TEMP[7].xxxx
+ 24: MOV TEMP[8].xy, TEMP[5].xwww
+ 25: MOV TEMP[8].z, TEMP[4].xxxx
+ 26: TEX TEMP[8].x, TEMP[8], SAMP[3], SHADOW2D
+ 27: MOV TEMP[7].y, TEMP[8].xxxx
+ 28: MOV TEMP[8].xy, TEMP[5].zyyy
+ 29: MOV TEMP[8].z, TEMP[4].xxxx
+ 30: TEX TEMP[8].x, TEMP[8], SAMP[3], SHADOW2D
+ 31: MOV TEMP[7].z, TEMP[8].xxxx
+ 32: MOV TEMP[5].xy, TEMP[5].xyyy
+ 33: MOV TEMP[5].z, TEMP[4].xxxx
+ 34: TEX TEMP[4].x, TEMP[5], SAMP[3], SHADOW2D
+ 35: MOV TEMP[7].w, TEMP[4].xxxx
+ 36: RCP TEMP[4].x, TEMP[0].wwww
+ 37: MUL TEMP[4].x, TEMP[0].zzzz, TEMP[4].xxxx
+ 38: MUL TEMP[5].x, -CONST[7].xxxx, CONST[7].xxxx
+ 39: MUL TEMP[5].x, TEMP[5].xxxx, TEMP[4].xxxx
+ 40: MUL TEMP[4].x, TEMP[5].xxxx, TEMP[4].xxxx
+ 41: MUL TEMP[4].x, TEMP[4].xxxx, IMM[1].wwww
+ 42: EX2 TEMP[4].x, TEMP[4].xxxx
+ 43: LRP TEMP[4].x, TEMP[4].xxxx, IMM[0].zzzz, CONST[7].yyyy
+ 44: MOV_SAT TEMP[4].x, TEMP[4].xxxx
+ 45: MUL TEMP[1].xyz, TEMP[3].xyzz, TEMP[1].xyzz
+ 46: MUL TEMP[5], TEMP[6].zxzx, TEMP[6].wwyy
+ 47: DP4 TEMP[5].x, TEMP[5], TEMP[7]
+ 48: MUL TEMP[5].x, IMM[2].xxxx, TEMP[5].xxxx
+ 49: MUL TEMP[1].xyz, TEMP[1].xyzz, TEMP[5].xxxx
+ 50: MAD TEMP[1].xyz, TEMP[3].xyzz, CONST[5].xyzz, TEMP[1].xyzz
+ 51: LRP TEMP[1].xyz, TEMP[4].xxxx, TEMP[1].xyzz, CONST[6].xyzz
+ 52: MOV TEMP[3].xy, IN[2].zwww
+ 53: TEX TEMP[3].w, TEMP[3], SAMP[2], 2D
+ 54: SLT TEMP[4].x, TEMP[3].wwww, IMM[2].yyyy
+ 55: IF TEMP[4].xxxx :2
+ 56:   MOV TEMP[4].x, IMM[0].yyyy
+ 57: ELSE :2
+ 58:   MOV TEMP[4].x, TEMP[3].wwww
+ 59: ENDIF
+ 60: MUL TEMP[1].xyz, TEMP[1].xyzz, TEMP[4].xxxx
+ 61: MOV TEMP[2].xyz, TEMP[1].xyzx
+ 62: MOV OUT[0], TEMP[2]
+ 63: END
+
+FRAG
+0000: 07891001 39000800 00000000 20140098  ADD t9, t0, void, u9.xxyy
+0001: 01091002 39009800 00000440 2015408a  MAD t9._y__, t9, u8.xxxx, u8.yyyy
+0002: 018a1009 00000000 00000000 002b8038  MOV t10.xy__, void, void, t3.zwzz
+0003: 020a1009 00000000 00000000 00000048  MOV t10.__z_, void, void, t4.xxxx
+0004: 01841009 00000000 00000000 00150028  MOV t4.xy__, void, void, t2.xyyy
+0005: 0c041018 39004f20 00000000 00000000  TEXLD t4.___w, tex1, t4, void, void
+0006: 00841001 2a809800 00000010 007fc048  ADD t4.x___, u9.zzzz, void, -t4.wwww
+0007: 04041009 00000000 00000000 00000048  MOV t4.___w, void, void, t4.xxxx
+0008: 01831009 00000000 00000000 00150038  MOV t3.xy__, void, void, t3.xyyy
+0009: 03831018 39003f20 00000000 00000000  TEXLD t3.xyz_, tex0, t3, void, void
+0010: 00851001 2a801800 00000000 203fc098  ADD t5.x___, t1.zzzz, void, u9.wwww
+0011: 01861001 15001800 00000000 200000a8  ADD t6.xy__, t1.xyyy, void, u10.xxxx
+0012: 01861013 00000000 00000000 00150068  FRC t6.xy__, void, void, t6.xyyy
+0013: 01871001 15006800 00000000 202a8098  ADD t7.xy__, t6.xyyy, void, u9.zzzz
+0014: 01881001 1540a800 00000010 00550068  ADD t8.xy__, u10.yyyy, void, -t6.xyyy
+0015: 06071009 00000000 00000000 00114088  MOV t7.__zw, void, void, t8.yyxy
+0016: 01861003 00009800 00a80350 00000000  MUL t6.xy__, u9.xxxx, t6.xyyy, void
+0017: 01861001 15001800 00000000 00550068  ADD t6.xy__, t1.xyyy, void, -t6.xyyy
+0018: 07861001 0280a800 00000010 00110068  ADD t6, u10.zzxx, void, t6.xyxy
+0019: 07861003 39006800 01dc0240 00000002  MUL t6, t6, u4.zwzw, void
+0020: 01881009 00000000 00000000 003f8068  MOV t8.xy__, void, void, t6.zwww
+0021: 02081009 00000000 00000000 00000058  MOV t8.__z_, void, void, t5.xxxx
+0022: 18881018 39008f20 00000000 00000000  TEXLD t8.x___, tex3, t8, void, void
+0023: 00881009 00000000 00000000 00000088  MOV t8.x___, void, void, t8.xxxx
+0024: 01811009 00000000 00000000 003f0068  MOV t1.xy__, void, void, t6.xwww
+0025: 02011009 00000000 00000000 00000058  MOV t1.__z_, void, void, t5.xxxx
+0026: 18811018 39001f20 00000000 00000000  TEXLD t1.x___, tex3, t1, void, void
+0027: 01081009 00000000 00000000 00000018  MOV t8._y__, void, void, t1.xxxx
+0028: 01811009 00000000 00000000 00158068  MOV t1.xy__, void, void, t6.zyyy
+0029: 02011009 00000000 00000000 00000058  MOV t1.__z_, void, void, t5.xxxx
+0030: 18811018 39001f20 00000000 00000000  TEXLD t1.x___, tex3, t1, void, void
+0031: 02081009 00000000 00000000 00000018  MOV t8.__z_, void, void, t1.xxxx
+0032: 01861009 00000000 00000000 00150068  MOV t6.xy__, void, void, t6.xyyy
+0033: 02061009 00000000 00000000 00000058  MOV t6.__z_, void, void, t5.xxxx
+0034: 18851018 39006f20 00000000 00000000  TEXLD t5.x___, tex3, t6, void, void
+0035: 04081009 00000000 00000000 00000058  MOV t8.___w, void, void, t5.xxxx
+0036: 0085100c 00000000 00000000 003fc098  RCP t5.x___, void, void, t9.wwww
+0037: 00851003 2a809800 000002c0 00000000  MUL t5.x___, t9.zzzz, t5.xxxx, void
+0038: 00861003 40007800 000003d0 00000002  MUL t6.x___, -u7.xxxx, u7.xxxx, void
+0039: 00861003 00006800 000002c0 00000000  MUL t6.x___, t6.xxxx, t5.xxxx, void
+0040: 00851003 00006800 000002c0 00000000  MUL t5.x___, t6.xxxx, t5.xxxx, void
+0041: 00851003 00005800 01fe0540 00000002  MUL t5.x___, t5.xxxx, u10.wwww, void
+0042: 00851011 00000000 00000000 00000058  EXP t5.x___, void, void, t5.xxxx
+0043: 078b1002 00005800 00aa03c0 2055407a  MAD t11, t5.xxxx, u7.yyyy, -u7.yyyy
+0044: 00851002 00005800 015404c0 007900ba  MAD t5.x___, t5.xxxx, u9.zzzz, -t11
+0045: 00851809 00000000 00000000 00000058  MOV.SAT t5.x___, void, void, t5.xxxx
+0046: 038a1003 29003800 01480540 00000000  MUL t10.xyz_, t3.xyzz, t10.xyzz, void
+0047: 07861003 08807800 00be03c0 00000000  MUL t6, t7.zxzx, t7.wwyy, void
+0048: 00861006 39006800 01c80440 00000000  DP4 t6.x___, t6, t8, void
+0049: 00861003 0000b800 00000350 00000000  MUL t6.x___, u11.xxxx, t6.xxxx, void
+0050: 038a1003 2900a800 00000340 00000000  MUL t10.xyz_, t10.xyzz, t6.xxxx, void
+0051: 038a1002 29003800 014802c0 002900aa  MAD t10.xyz_, t3.xyzz, u5.xyzz, t10.xyzz
+0052: 078b1002 00005800 01480340 2069006a  MAD t11, t5.xxxx, u6.xyzz, -u6.xyzz
+0053: 038a1002 00005800 01480540 007900b8  MAD t10.xyz_, t5.xxxx, t10.xyzz, -t11
+0054: 01831009 00000000 00000000 003f8028  MOV t3.xy__, void, void, t2.zwww
+0055: 14031018 39003f20 00000000 00000000  TEXLD t3.___w, tex2, t3, void, void
+0056: 00851090 3fc03800 00aa05c0 00000002  SET.LT t5.x___, t3.wwww, u11.yyyy, void
+0057: 00000156 00005800 00aa04c0 00001e02  BRANCH.EQ void, t5.xxxx, u9.yyyy, label_0060
+0058: 00851009 00000000 00000000 20154098  MOV t5.x___, void, void, u9.yyyy
+0059: 00000016 00000000 00000000 00001e80  BRANCH void, void, void, label_0061
+0060: 00851009 00000000 00000000 003fc038  MOV t5.x___, void, void, t3.wwww
+0061: 038a1003 2900a800 000002c0 00000000  MUL t10.xyz_, t10.xyzz, t5.xxxx, void
+0062: 03841009 00000000 00000000 000900a8  MOV t4.xyz_, void, void, t10.xyzx
+num loops: 0
+num temps: 12
+num const: 36
+immediates:
+ [9].x = 0.500000 (0x3f000000)
+ [9].y = 0.000000 (0x00000000)
+ [9].z = 1.000000 (0x3f800000)
+ [9].w = -0.000500 (0xba03126f)
+ [10].x = -0.500000 (0xbf000000)
+ [10].y = 2.000000 (0x40000000)
+ [10].z = 1.000000 (0x3f800000)
+ [10].w = 1.442700 (0x3fb8aa65)
+ [11].x = 0.111100 (0x3de38866)
+ [11].y = 0.030000 (0x3cf5c28f)
+ [11].z = 0.000000 (0x00000000)
+ [11].w = 0.000000 (0x00000000)
+inputs:
+ [1] name=GENERIC index=9 comps=3
+ [2] name=GENERIC index=10 comps=4
+ [3] name=GENERIC index=11 comps=4
+ [4] name=GENERIC index=12 comps=1
+outputs:
+special:
+  ps_color_out_reg=4
+  ps_depth_out_reg=-1
+  input_count_unk8=0x0000001f

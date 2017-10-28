@@ -1,0 +1,47 @@
+VERT
+DCL IN[0]
+DCL IN[1]
+DCL IN[2]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[20]
+DCL CONST[0..39]
+DCL TEMP[0..4], LOCAL
+DCL ADDR[0]
+IMM[0] FLT32 {    0.2500,     0.0000,     7.0000,     4.0000}
+  0: MUL TEMP[0].x, IN[2].xxxx, IMM[0].xxxx
+  1: TRUNC TEMP[0].x, TEMP[0].xxxx
+  2: MAX TEMP[1].x, TEMP[0].xxxx, IMM[0].yyyy
+  3: MIN TEMP[1].x, TEMP[1].xxxx, IMM[0].zzzz
+  4: TRUNC TEMP[1].x, TEMP[1].xxxx
+  5: MUL TEMP[1].x, TEMP[1].xxxx, IMM[0].wwww
+  6: MAX TEMP[2].x, TEMP[0].xxxx, IMM[0].yyyy
+  7: MIN TEMP[2].x, TEMP[2].xxxx, IMM[0].zzzz
+  8: TRUNC TEMP[2].x, TEMP[2].xxxx
+  9: MUL TEMP[2].x, TEMP[2].xxxx, IMM[0].wwww
+ 10: MAX TEMP[3].x, TEMP[0].xxxx, IMM[0].yyyy
+ 11: MIN TEMP[3].x, TEMP[3].xxxx, IMM[0].zzzz
+ 12: TRUNC TEMP[3].x, TEMP[3].xxxx
+ 13: MUL TEMP[3].x, TEMP[3].xxxx, IMM[0].wwww
+ 14: MAX TEMP[4].x, TEMP[0].xxxx, IMM[0].yyyy
+ 15: MIN TEMP[4].x, TEMP[4].xxxx, IMM[0].zzzz
+ 16: TRUNC TEMP[4].x, TEMP[4].xxxx
+ 17: MUL TEMP[4].x, TEMP[4].xxxx, IMM[0].wwww
+ 18: ARL ADDR[0].x, TEMP[4].xxxx
+ 19: MUL TEMP[4], CONST[ADDR[0].x], IN[0].xxxx
+ 20: ARL ADDR[0].x, TEMP[3].xxxx
+ 21: MAD TEMP[3], CONST[ADDR[0].x+1], IN[0].yyyy, TEMP[4]
+ 22: ARL ADDR[0].x, TEMP[2].xxxx
+ 23: MAD TEMP[2], CONST[ADDR[0].x+2], IN[0].zzzz, TEMP[3]
+ 24: ARL ADDR[0].x, TEMP[1].xxxx
+ 25: ARL ADDR[0].x, TEMP[1].xxxx
+ 26: MAD TEMP[1], CONST[ADDR[0].x+3], IN[0].wwww, TEMP[2]
+ 27: MAX TEMP[0].x, TEMP[0].xxxx, IMM[0].yyyy
+ 28: MIN TEMP[0].x, TEMP[0].xxxx, IMM[0].zzzz
+ 29: TRUNC TEMP[0].x, TEMP[0].xxxx
+ 30: ARL ADDR[0].x, TEMP[0].xxxx
+ 31: MOV TEMP[0], CONST[ADDR[0].x+32]
+ 32: MAD TEMP[0].xy, IN[1].xyyy, TEMP[0].zwww, TEMP[0].xyyy
+ 33: MOV OUT[1], TEMP[0]
+ 34: MOV OUT[0], TEMP[1]
+ 35: END
+

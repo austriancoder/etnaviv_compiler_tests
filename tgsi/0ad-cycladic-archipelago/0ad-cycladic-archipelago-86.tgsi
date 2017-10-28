@@ -1,0 +1,65 @@
+VERT
+DCL IN[0]
+DCL IN[1]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[9]
+DCL OUT[2], GENERIC[10]
+DCL OUT[3], GENERIC[11]
+DCL OUT[4], GENERIC[12]
+DCL OUT[5], GENERIC[13]
+DCL OUT[6], GENERIC[14]
+DCL CONST[0..19]
+DCL TEMP[0..6], LOCAL
+IMM[0] FLT32 {   15.0000,     0.0000,     0.8696,     0.1500}
+  0: MOV TEMP[0].y, IMM[0].xxxx
+  1: MOV TEMP[0].x, IN[0].xxxx
+  2: MOV TEMP[1].x, -CONST[13].xxxx
+  3: COS TEMP[2].x, TEMP[1].xxxx
+  4: SIN TEMP[1].x, TEMP[1].xxxx
+  5: MOV TEMP[3].x, TEMP[2].xxxx
+  6: MOV TEMP[3].y, TEMP[1].xxxx
+  7: MOV TEMP[4].w, IMM[0].yyyy
+  8: MUL TEMP[5].x, IN[0].zzzz, TEMP[1].xxxx
+  9: MAD TEMP[4].x, IN[0].xxxx, TEMP[2].xxxx, -TEMP[5].xxxx
+ 10: MUL TEMP[1].x, IN[0].xxxx, TEMP[1].xxxx
+ 11: MAD TEMP[1].x, IN[0].zzzz, TEMP[2].xxxx, TEMP[1].xxxx
+ 12: MOV TEMP[4].y, TEMP[1].xxxx
+ 13: MOV TEMP[4].z, CONST[15].xxxx
+ 14: MOV TEMP[1].zw, TEMP[4].wwzw
+ 15: MUL TEMP[1].xy, TEMP[4].xyyy, CONST[12].xxxx
+ 16: MUL TEMP[2], CONST[4], IN[0].xxxx
+ 17: MAD TEMP[2], CONST[5], IN[0].yyyy, TEMP[2]
+ 18: MAD TEMP[2], CONST[6], IN[0].zzzz, TEMP[2]
+ 19: ADD TEMP[2].xyw, TEMP[2], CONST[7]
+ 20: MUL TEMP[4], CONST[16], IN[0].xxxx
+ 21: MAD TEMP[4], CONST[17], IN[0].yyyy, TEMP[4]
+ 22: MAD TEMP[4], CONST[18], IN[0].zzzz, TEMP[4]
+ 23: ADD TEMP[4], TEMP[4], CONST[19]
+ 24: MOV TEMP[3].xy, TEMP[3].xyxx
+ 25: MAD TEMP[5].x, IN[1].xxxx, IMM[0].zzzz, IMM[0].wwww
+ 26: MUL TEMP[5].x, CONST[14].xxxx, TEMP[5].xxxx
+ 27: MOV TEMP[5].z, TEMP[5].xxxx
+ 28: MUL TEMP[6], CONST[8], IN[0].xxxx
+ 29: MAD TEMP[6], CONST[9], IN[0].yyyy, TEMP[6]
+ 30: MAD TEMP[6], CONST[10], IN[0].zzzz, TEMP[6]
+ 31: ADD TEMP[6].xy, TEMP[6], CONST[11]
+ 32: MOV TEMP[3].zw, TEMP[6].yyxy
+ 33: MUL TEMP[6], CONST[0], IN[0].xxxx
+ 34: MAD TEMP[6], CONST[1], IN[0].yyyy, TEMP[6]
+ 35: MAD TEMP[6], CONST[2], IN[0].zzzz, TEMP[6]
+ 36: ADD TEMP[6].xyw, TEMP[6], CONST[3]
+ 37: MOV TEMP[6].xyz, TEMP[6].xywx
+ 38: MOV TEMP[6].w, TEMP[2].xxxx
+ 39: MOV TEMP[2].xy, TEMP[2].ywyy
+ 40: MOV TEMP[5].w, IN[1].yyyy
+ 41: MOV TEMP[5].xy, IN[1].xyxx
+ 42: MOV TEMP[2].zw, TEMP[0].yyxy
+ 43: MOV TEMP[0].x, IN[0].zzzz
+ 44: MOV OUT[5], TEMP[2]
+ 45: MOV OUT[4], TEMP[6]
+ 46: MOV OUT[1], TEMP[1]
+ 47: MOV OUT[6], TEMP[0]
+ 48: MOV OUT[3], TEMP[5]
+ 49: MOV OUT[2], TEMP[3]
+ 50: MOV OUT[0], TEMP[4]
+ 51: END

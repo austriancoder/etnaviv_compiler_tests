@@ -1,0 +1,111 @@
+FRAG
+PROPERTY FS_COORD_PIXEL_CENTER INTEGER
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], POSITION, LINEAR
+DCL IN[1], GENERIC[9], PERSPECTIVE
+DCL IN[2], GENERIC[10], PERSPECTIVE
+DCL IN[3], GENERIC[11], PERSPECTIVE
+DCL IN[4], GENERIC[12], PERSPECTIVE
+DCL IN[5], GENERIC[13], PERSPECTIVE
+DCL IN[6], GENERIC[14], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL SAMP[0]
+DCL SAMP[1]
+DCL SAMP[2]
+DCL SAMP[3]
+DCL SAMP[4]
+DCL CONST[12..13]
+DCL CONST[5..11]
+DCL TEMP[0]
+DCL TEMP[1..10], LOCAL
+IMM[0] FLT32 {    0.5000,     0.0000,     2.0000,    -1.0000}
+IMM[1] FLT32 {   -0.0005,    -0.5000,     1.0000,     1.4427}
+IMM[2] FLT32 {    0.1111,     0.0300,     0.0000,     0.0000}
+  0: ADD TEMP[0], IN[0], IMM[0].xxyy
+  1: MAD TEMP[0].y, TEMP[0], CONST[13].xxxx, CONST[13].yyyy
+  2: MOV TEMP[1].x, IN[4].wwww
+  3: MOV TEMP[1].yz, IN[5].yxyy
+  4: MOV TEMP[2].xy, IN[5].zwzz
+  5: MOV TEMP[2].z, IN[6].xxxx
+  6: MOV TEMP[3].xy, IN[3].zwww
+  7: TEX TEMP[3], TEMP[3], SAMP[0], 2D
+  8: MOV TEMP[4].w, TEMP[3].wwww
+  9: MOV TEMP[5].xy, IN[3].zwww
+ 10: TEX TEMP[5].xyz, TEMP[5], SAMP[2], 2D
+ 11: MAD TEMP[5].xyz, TEMP[5].xyzz, IMM[0].zzzz, IMM[0].wwww
+ 12: MUL TEMP[6].xyz, IN[4].xyzz, -IN[2].wwww
+ 13: MUL TEMP[7].xyz, IN[2].xyzz, TEMP[5].xxxx
+ 14: MAD TEMP[6].xyz, TEMP[6].xyzz, TEMP[5].yyyy, TEMP[7].xyzz
+ 15: MAD TEMP[5].xyz, IN[6].yzww, TEMP[5].zzzz, TEMP[6].xyzz
+ 16: DP3 TEMP[6].x, TEMP[5].xyzz, TEMP[5].xyzz
+ 17: RSQ TEMP[6].x, TEMP[6].xxxx
+ 18: MUL TEMP[5].xyz, TEMP[5].xyzz, TEMP[6].xxxx
+ 19: MOV TEMP[6].xy, IN[3].zwww
+ 20: TEX TEMP[6].xyz, TEMP[6], SAMP[3], 2D
+ 21: MUL TEMP[6].xyz, CONST[8].xyzz, TEMP[6].xyzz
+ 22: DP3 TEMP[7].x, TEMP[5].xyzz, TEMP[5].xyzz
+ 23: RSQ TEMP[7].x, TEMP[7].xxxx
+ 24: MUL TEMP[7].xyz, TEMP[5].xyzz, TEMP[7].xxxx
+ 25: DP3 TEMP[7].x, TEMP[7].xyzz, TEMP[1].xyzz
+ 26: MAX TEMP[7].x, IMM[0].yyyy, TEMP[7].xxxx
+ 27: POW TEMP[7].x, TEMP[7].xxxx, CONST[12].yyyy
+ 28: MUL TEMP[1].xyz, TEMP[6].xyzz, TEMP[7].xxxx
+ 29: ADD TEMP[6].x, IN[1].zzzz, IMM[1].xxxx
+ 30: ADD TEMP[7].xy, IN[1].xyyy, IMM[1].yyyy
+ 31: FRC TEMP[7].xy, TEMP[7].xyyy
+ 32: ADD TEMP[8].xy, TEMP[7].xyyy, IMM[1].zzzz
+ 33: ADD TEMP[9].xy, IMM[0].zzzz, -TEMP[7].xyyy
+ 34: MOV TEMP[8].zw, TEMP[9].yyxy
+ 35: MUL TEMP[7].xy, IMM[0].xxxx, TEMP[7].xyyy
+ 36: ADD TEMP[7].xy, IN[1].xyyy, -TEMP[7].xyyy
+ 37: ADD TEMP[7], IMM[1].zzyy, TEMP[7].xyxy
+ 38: MUL TEMP[7], TEMP[7], CONST[5].zwzw
+ 39: MOV TEMP[9].xy, TEMP[7].zwww
+ 40: MOV TEMP[9].z, TEMP[6].xxxx
+ 41: TEX TEMP[9].x, TEMP[9], SAMP[4], SHADOW2D
+ 42: MOV TEMP[9].x, TEMP[9].xxxx
+ 43: MOV TEMP[10].xy, TEMP[7].xwww
+ 44: MOV TEMP[10].z, TEMP[6].xxxx
+ 45: TEX TEMP[10].x, TEMP[10], SAMP[4], SHADOW2D
+ 46: MOV TEMP[9].y, TEMP[10].xxxx
+ 47: MOV TEMP[10].xy, TEMP[7].zyyy
+ 48: MOV TEMP[10].z, TEMP[6].xxxx
+ 49: TEX TEMP[10].x, TEMP[10], SAMP[4], SHADOW2D
+ 50: MOV TEMP[9].z, TEMP[10].xxxx
+ 51: MOV TEMP[7].xy, TEMP[7].xyyy
+ 52: MOV TEMP[7].z, TEMP[6].xxxx
+ 53: TEX TEMP[6].x, TEMP[7], SAMP[4], SHADOW2D
+ 54: MOV TEMP[9].w, TEMP[6].xxxx
+ 55: RCP TEMP[6].x, TEMP[0].wwww
+ 56: MUL TEMP[6].x, TEMP[0].zzzz, TEMP[6].xxxx
+ 57: MUL TEMP[7].x, -CONST[11].xxxx, CONST[11].xxxx
+ 58: MUL TEMP[7].x, TEMP[7].xxxx, TEMP[6].xxxx
+ 59: MUL TEMP[6].x, TEMP[7].xxxx, TEMP[6].xxxx
+ 60: MUL TEMP[6].x, TEMP[6].xxxx, IMM[1].wwww
+ 61: EX2 TEMP[6].x, TEMP[6].xxxx
+ 62: LRP TEMP[6].x, TEMP[6].xxxx, IMM[1].zzzz, CONST[11].yyyy
+ 63: MOV_SAT TEMP[6].x, TEMP[6].xxxx
+ 64: DP3 TEMP[5].x, -CONST[9].xyzz, TEMP[5].xyzz
+ 65: MAX TEMP[5].x, TEMP[5].xxxx, IMM[0].yyyy
+ 66: MAD TEMP[5].xyz, TEMP[5].xxxx, CONST[8].xyzz, -TEMP[2].xyzz
+ 67: MAD TEMP[2].xyz, TEMP[5].xyzz, CONST[12].xxxx, TEMP[2].xyzz
+ 68: MAD TEMP[1].xyz, TEMP[3].xyzz, TEMP[2].xyzz, TEMP[1].xyzz
+ 69: MUL TEMP[2], TEMP[8].zxzx, TEMP[8].wwyy
+ 70: DP4 TEMP[2].x, TEMP[2], TEMP[9]
+ 71: MUL TEMP[2].x, IMM[2].xxxx, TEMP[2].xxxx
+ 72: MUL TEMP[1].xyz, TEMP[1].xyzz, TEMP[2].xxxx
+ 73: MAD TEMP[1].xyz, TEMP[3].xyzz, CONST[7].xyzz, TEMP[1].xyzz
+ 74: LRP TEMP[1].xyz, TEMP[6].xxxx, TEMP[1].xyzz, CONST[10].xyzz
+ 75: MOV TEMP[2].xy, IN[3].xyyy
+ 76: TEX TEMP[2].w, TEMP[2], SAMP[1], 2D
+ 77: SLT TEMP[3].x, TEMP[2].wwww, IMM[2].yyyy
+ 78: IF TEMP[3].xxxx :2
+ 79:   MOV TEMP[3].x, IMM[0].yyyy
+ 80: ELSE :2
+ 81:   MOV TEMP[3].x, TEMP[2].wwww
+ 82: ENDIF
+ 83: MUL TEMP[1].xyz, TEMP[1].xyzz, TEMP[3].xxxx
+ 84: MUL TEMP[1].xyz, TEMP[1].xyzz, CONST[6].xyzz
+ 85: MOV TEMP[4].xyz, TEMP[1].xyzx
+ 86: MOV OUT[0], TEMP[4]
+ 87: END

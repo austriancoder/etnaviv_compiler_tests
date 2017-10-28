@@ -1,0 +1,22 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], COLOR, COLOR
+DCL IN[1], FOG, PERSPECTIVE
+DCL IN[2], GENERIC[0], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL SAMP[0]
+DCL CONST[1..3]
+DCL TEMP[0..3], LOCAL
+IMM[0] FLT32 {    1.0000,     0.0000,     0.0000,     0.0000}
+  0: MOV TEMP[0].xy, IN[2].xyyy
+  1: MOV TEMP[0].w, IN[2].wwww
+  2: TXP TEMP[0], TEMP[0], SAMP[0], 2D
+  3: MUL TEMP[1].xyz, TEMP[0], IN[0]
+  4: MUL TEMP[0].x, IN[0].wwww, TEMP[0].wwww
+  5: MOV TEMP[0].w, TEMP[0].xxxx
+  6: MAD_SAT TEMP[2].x, IN[1].xxxx, CONST[1].xxxx, CONST[1].yyyy
+  7: ADD TEMP[3].x, IMM[0].xxxx, -TEMP[2].xxxx
+  8: MUL TEMP[3].xyz, CONST[2].xyzz, TEMP[3].xxxx
+  9: MAD TEMP[0].xyz, TEMP[1].xyzz, TEMP[2].xxxx, TEMP[3].xyzz
+ 10: MOV OUT[0], TEMP[0]
+ 11: END

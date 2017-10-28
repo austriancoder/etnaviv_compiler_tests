@@ -1,0 +1,77 @@
+VERT
+DCL IN[0]
+DCL IN[1]
+DCL IN[2]
+DCL IN[3]
+DCL IN[4]
+DCL IN[5]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[9]
+DCL OUT[2], GENERIC[10]
+DCL CONST[0..18]
+DCL TEMP[0..8], LOCAL
+IMM[0] FLT32 {    0.5000,     0.0000,     1.0000,     0.0000}
+  0: MUL TEMP[0], CONST[4], IN[2].xxxx
+  1: MAD TEMP[0], CONST[5], IN[2].yyyy, TEMP[0]
+  2: MAD TEMP[0].xyz, CONST[6], IN[2].zzzz, TEMP[0]
+  3: ADD TEMP[0].xyz, TEMP[0].xyzz, CONST[12].xyzz
+  4: MUL TEMP[1], CONST[4], IN[3].xxxx
+  5: MAD TEMP[1], CONST[5], IN[3].yyyy, TEMP[1]
+  6: MAD TEMP[1].xyz, CONST[6], IN[3].zzzz, TEMP[1]
+  7: ADD TEMP[1].xyz, TEMP[1].xyzz, CONST[13].xyzz
+  8: ADD TEMP[2].x, CONST[15].xxxx, -CONST[16].xxxx
+  9: ADD TEMP[2].x, TEMP[2].xxxx, -IN[1].wwww
+ 10: RCP TEMP[3].x, CONST[14].xxxx
+ 11: MUL TEMP[2].x, TEMP[2].xxxx, TEMP[3].xxxx
+ 12: FRC TEMP[2].x, TEMP[2].xxxx
+ 13: MUL TEMP[2].x, CONST[14].xxxx, TEMP[2].xxxx
+ 14: RCP TEMP[3].x, IN[0].zzzz
+ 15: MUL TEMP[3].x, TEMP[2].xxxx, TEMP[3].xxxx
+ 16: RCP TEMP[4].x, CONST[18].xxxx
+ 17: ADD TEMP[5].x, IN[0].xxxx, IMM[0].xxxx
+ 18: RCP TEMP[6].x, CONST[17].xxxx
+ 19: MAD TEMP[6].x, TEMP[2].xxxx, TEMP[6].xxxx, IN[0].wwww
+ 20: FLR TEMP[6].x, TEMP[6].xxxx
+ 21: MUL TEMP[6].x, TEMP[6].xxxx, TEMP[4].xxxx
+ 22: FRC TEMP[6].x, TEMP[6].xxxx
+ 23: MUL TEMP[6].x, CONST[18].xxxx, TEMP[6].xxxx
+ 24: MUL TEMP[6].x, TEMP[6].xxxx, TEMP[4].xxxx
+ 25: MAD TEMP[4].x, TEMP[5].xxxx, TEMP[4].xxxx, TEMP[6].xxxx
+ 26: ADD TEMP[5].x, IN[0].yyyy, IMM[0].xxxx
+ 27: MOV TEMP[4].y, TEMP[5].xxxx
+ 28: LRP TEMP[5].x, TEMP[3].xxxx, IN[3].wwww, IN[2].wwww
+ 29: SLT TEMP[6].x, TEMP[3].xxxx, IMM[0].yyyy
+ 30: SLT TEMP[7].x, IMM[0].zzzz, TEMP[3].xxxx
+ 31: ADD TEMP[6].x, TEMP[6].xxxx, TEMP[7].xxxx
+ 32: SLT TEMP[6].x, -TEMP[6].xxxx, IMM[0].yyyy
+ 33: IF TEMP[6].xxxx :0
+ 34:   MOV TEMP[6].x, IMM[0].yyyy
+ 35: ELSE :0
+ 36:   MOV TEMP[6].x, TEMP[5].xxxx
+ 37: ENDIF
+ 38: MAD TEMP[5].x, IN[4].yyyy, TEMP[2].xxxx, IN[4].xxxx
+ 39: SIN TEMP[5].x, TEMP[5].xxxx
+ 40: MAD TEMP[7].x, IN[4].yyyy, TEMP[2].xxxx, IN[4].xxxx
+ 41: COS TEMP[7].x, TEMP[7].xxxx
+ 42: MUL TEMP[8].x, IN[0].xxxx, TEMP[7].xxxx
+ 43: MAD TEMP[8].x, IN[0].yyyy, TEMP[5].xxxx, TEMP[8].xxxx
+ 44: MUL TEMP[5].x, -IN[0].xxxx, TEMP[5].xxxx
+ 45: MAD TEMP[5].x, IN[0].yyyy, TEMP[7].xxxx, TEMP[5].xxxx
+ 46: MUL TEMP[1].xyz, TEMP[1].xyzz, TEMP[2].xxxx
+ 47: MUL TEMP[7].xyz, CONST[8].xyzz, TEMP[8].xxxx
+ 48: MAD TEMP[5].xyz, CONST[9].xyzz, TEMP[5].xxxx, TEMP[7].xyzz
+ 49: MUL TEMP[5].xyz, TEMP[5].xyzz, TEMP[6].xxxx
+ 50: MAD TEMP[5].xyz, TEMP[0].xyzz, TEMP[2].xxxx, TEMP[5].xyzz
+ 51: MAD TEMP[1].xyz, TEMP[1].xyzz, TEMP[2].xxxx, TEMP[5].xyzz
+ 52: ADD TEMP[1].xyz, TEMP[1].xyzz, IN[1].xyzz
+ 53: ADD TEMP[0].xyz, TEMP[1].xyzz, CONST[7].xyzz
+ 54: MUL TEMP[1], CONST[0], TEMP[0].xxxx
+ 55: MAD TEMP[1], CONST[1], TEMP[0].yyyy, TEMP[1]
+ 56: MAD TEMP[0], CONST[2], TEMP[0].zzzz, TEMP[1]
+ 57: ADD TEMP[0], TEMP[0], CONST[3]
+ 58: MOV TEMP[1].xy, TEMP[4].xyxx
+ 59: MOV TEMP[1].z, TEMP[3].xxxx
+ 60: MOV OUT[1], IN[5]
+ 61: MOV OUT[2], TEMP[1]
+ 62: MOV OUT[0], TEMP[0]
+ 63: END

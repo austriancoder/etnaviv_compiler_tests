@@ -1,0 +1,10 @@
+
+VERT
+DCL OUT[0], POSITION
+DCL CONST[0..9]
+DCL TEMP[0..1], LOCAL
+IMM[0] FLT32 {    0.0000,     0.0000,     0.0000,     0.0000}
+  1: DP3 TEMP[1].x, CONST[8].xyzz, CONST[8].xyzz
+  2: MOV OUT[0], TEMP[1].xxxx
+  3: END
+

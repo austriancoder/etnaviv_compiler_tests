@@ -1,0 +1,8 @@
+VERT
+DCL OUT[0], POSITION
+DCL CONST[0..4]
+DCL ADDR[0]
+  1: ARL ADDR[0].x, CONST[4].xxxx
+  2: MOV OUT[0], CONST[ADDR[0].x+1]
+  9: END
+

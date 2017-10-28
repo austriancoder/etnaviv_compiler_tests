@@ -1,0 +1,9 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL OUT[0], COLOR
+IMM[0] FLT32 {    8.0000,   -10.0000,     1.0000,    12.0000}
+  0: RCP OUT[0].x, IMM[0].xxxx
+  1: RCP OUT[0].y, IMM[0].yyyy
+  2: RCP OUT[0].z, IMM[0].zzzz
+  3: RCP OUT[0].w, IMM[0].wwww
+  4: END

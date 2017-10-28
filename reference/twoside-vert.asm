@@ -1,0 +1,56 @@
+VERT
+DCL IN[0]
+DCL IN[1]
+DCL IN[2]
+DCL OUT[0], POSITION
+DCL OUT[1], COLOR
+DCL OUT[2], COLOR[1]
+DCL OUT[3], BCOLOR
+DCL CONST[0..4]
+DCL TEMP[0..2], LOCAL
+  0: IF CONST[0].xxxx :0
+  1:   MOV TEMP[0], IN[2]
+  2: ELSE :0
+  3:   MOV TEMP[1], IN[2]
+  4: ENDIF
+  5: MUL TEMP[2], CONST[1], IN[0].xxxx
+  6: MAD TEMP[2], CONST[2], IN[0].yyyy, TEMP[2]
+  7: MAD TEMP[2], CONST[3], IN[0].zzzz, TEMP[2]
+  8: MAD TEMP[2], CONST[4], IN[0].wwww, TEMP[2]
+  9: MOV_SAT OUT[3], TEMP[1]
+ 10: MOV_SAT OUT[2], TEMP[0]
+ 11: MOV OUT[0], TEMP[2]
+ 12: MOV_SAT OUT[1], IN[1]
+ 13: END
+
+VERT
+0000: 07861009 00000000 00000000 20000008  MOV t6, void, void, u0.xxxx
+0001: 00000156 39006800 000002c0 00000202  BRANCH.EQ void, t6, u5.xxxx, label_0004
+0002: 07801009 00000000 00000000 00390018  MOV t0, void, void, t1
+0003: 00000016 00000000 00000000 00000280  BRANCH void, void, void, label_0005
+0004: 07811009 00000000 00000000 00390018  MOV t1, void, void, t1
+0005: 07821003 39001800 000001d0 00000000  MUL t2, u1, t3.xxxx, void
+0006: 07821002 39002800 00aa01d0 00390028  MAD t2, u2, t3.yyyy, t2
+0007: 07821002 39003800 015401d0 00390028  MAD t2, u3, t3.zzzz, t2
+0008: 07821002 39004800 01fe01d0 00390028  MAD t2, u4, t3.wwww, t2
+0009: 07811809 00000000 00000000 00390018  MOV.SAT t1, void, void, t1
+0010: 07801809 00000000 00000000 00390008  MOV.SAT t0, void, void, t0
+0011: 07851809 00000000 00000000 00390048  MOV.SAT t5, void, void, t4
+num loops: 0
+num temps: 7
+num const: 20
+immediates:
+ [5].x = 0.000000 (0x00000000)
+inputs:
+ [3] name=POSITION index=0 comps=4
+ [4] name=POSITION index=0 comps=4
+ [1] name=POSITION index=0 comps=4
+outputs:
+ [5] name=COLOR index=0 comps=4
+ [0] name=COLOR index=1 comps=4
+ [1] name=BCOLOR index=0 comps=4
+special:
+  vs_pos_out_reg=2
+  vs_pointsize_out_reg=-1
+  vs_load_balancing=0x0f3f0512
+  input_count_unk8=0x00000001

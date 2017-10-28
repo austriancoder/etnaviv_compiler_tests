@@ -1,0 +1,58 @@
+VERT
+DCL IN[0]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[9]
+DCL OUT[2], GENERIC[10]
+DCL OUT[3], GENERIC[11]
+DCL OUT[4], GENERIC[12]
+DCL CONST[0..5]
+DCL TEMP[0], LOCAL
+DCL TEMP[1..2], ARRAY(1), LOCAL
+DCL TEMP[3..8], ARRAY(2), LOCAL
+DCL TEMP[9..10], ARRAY(3), LOCAL
+DCL TEMP[11..12], ARRAY(4), LOCAL
+DCL TEMP[13..16], LOCAL
+DCL ADDR[0]
+IMM[0] FLT32 {    1.0000,     2.0000,     3.0000,     4.0000}
+IMM[1] FLT32 {    5.0000,     6.0000,     7.0000,     8.0000}
+IMM[2] FLT32 {    9.0000,    10.0000,    11.0000,    12.0000}
+IMM[3] FLT32 {    0.0000,     1.0000,     0.0000,     0.0000}
+  0: MUL TEMP[0], CONST[2], IN[0].xxxx
+  1: MAD TEMP[0], CONST[3], IN[0].yyyy, TEMP[0]
+  2: MAD TEMP[0], CONST[4], IN[0].zzzz, TEMP[0]
+  3: MAD TEMP[0], CONST[5], IN[0].wwww, TEMP[0]
+  4: MOV TEMP[1], IMM[0].xyxx
+  5: MOV TEMP[2], IMM[0].zwzz
+  6: MOV TEMP[3], TEMP[1].xyyy
+  7: MOV TEMP[4], TEMP[2].xyyy
+  8: MOV TEMP[9], IMM[1].xyxx
+  9: MOV TEMP[10], IMM[1].zwzz
+ 10: MOV TEMP[5], TEMP[9].xyyy
+ 11: MOV TEMP[6], TEMP[10].xyyy
+ 12: MOV TEMP[11], IMM[2].xyxx
+ 13: MOV TEMP[12], IMM[2].zwzz
+ 14: MOV TEMP[7], TEMP[11].xyyy
+ 15: MOV TEMP[8], TEMP[12].xyyy
+ 16: MUL TEMP[13].x, CONST[0].xxxx, IMM[0].yyyy
+ 17: ARL ADDR[0].x, TEMP[13].xxxx
+ 18: SNE TEMP[14], TEMP[ADDR[0].x+4](2).xyyy, CONST[1].xyyy
+ 19: DP2 TEMP[13].x, TEMP[14], TEMP[14]
+ 20: SGE TEMP[13].x, -TEMP[13].xxxx, IMM[3].xxxx
+ 21: IF TEMP[13].xxxx :0
+ 22:   MOV TEMP[13], IMM[3].xyxy
+ 23: ELSE :0
+ 24:   MOV TEMP[13], IMM[3].yxxy
+ 25: ENDIF
+ 26: MOV TEMP[14].xy, TEMP[3].xyxx
+ 27: MOV TEMP[14].zw, TEMP[4].yyxy
+ 28: MOV TEMP[15].xy, TEMP[5].xyxx
+ 29: MOV TEMP[15].zw, TEMP[6].yyxy
+ 30: MOV TEMP[16].xy, TEMP[7].xyxx
+ 31: MOV TEMP[16].zw, TEMP[8].yyxy
+ 32: MOV OUT[3], TEMP[15]
+ 33: MOV OUT[4], TEMP[16]
+ 34: MOV OUT[1], TEMP[13]
+ 35: MOV OUT[0], TEMP[0]
+ 36: MOV OUT[2], TEMP[14]
+ 37: END
+

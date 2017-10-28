@@ -1,0 +1,14 @@
+VERT
+DCL IN[0]
+DCL IN[1]
+DCL OUT[0], POSITION
+DCL CONST[0..9]
+DCL TEMP[0..1], LOCAL
+IMM[0] FLT32 {    0.0000,     0.0000,     0.0000,     0.0000}
+  1: MUL TEMP[0], CONST[4].xyzz, IN[0].xyzz
+  2: IF TEMP[0].xxxx :0
+  3:   ADD TEMP[0], TEMP[0], IN[1]
+  4: ENDIF
+  5: MOV OUT[0], TEMP[0]
+  6: END
+

@@ -1,0 +1,16 @@
+FRAG
+DCL IN[0], GENERIC[0], PERSPECTIVE
+DCL IN[1], COLOR, PERSPECTIVE
+DCL OUT[0], COLOR
+DCL SAMP[0]
+DCL TEMP[0..2]
+IMM[0] FLT32 {    0.0000,     1.0000,     0.0000,     0.0000}
+  0: SGT TEMP[2], IN[0].xyxy, IMM[0].xxxx
+  1: SLT TEMP[1], IN[0].xyxy, IMM[0].yyyy
+  2: MIN TEMP[1], TEMP[1], TEMP[2]
+  3: MIN TEMP[1], TEMP[1].xxxx, TEMP[1].yyyy
+  4: TEX TEMP[2], IN[0], SAMP[0], 2D
+  5: MUL TEMP[0], TEMP[2], TEMP[1]
+  6: MUL OUT[0], TEMP[0], IN[1].wwww
+  7: END
+

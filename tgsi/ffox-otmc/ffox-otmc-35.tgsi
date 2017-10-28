@@ -1,0 +1,31 @@
+VERT
+DCL IN[0]
+DCL IN[1]
+DCL IN[2]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[9]
+DCL OUT[2], GENERIC[10]
+DCL OUT[3], GENERIC[11]
+DCL CONST[0..12]
+DCL TEMP[0..3], LOCAL
+  0: MUL TEMP[0], CONST[0], IN[0].xxxx
+  1: MAD TEMP[0], CONST[1], IN[0].yyyy, TEMP[0]
+  2: MAD TEMP[0], CONST[2], IN[0].zzzz, TEMP[0]
+  3: MAD TEMP[0], CONST[3], IN[0].wwww, TEMP[0]
+  4: MUL TEMP[1], CONST[5], IN[0].xxxx
+  5: MAD TEMP[1], CONST[6], IN[0].yyyy, TEMP[1]
+  6: MAD TEMP[1], CONST[7], IN[0].zzzz, TEMP[1]
+  7: MAD TEMP[1].xyz, CONST[8], IN[0].wwww, TEMP[1]
+  8: ADD TEMP[1].xyz, CONST[4].xyzz, -TEMP[1].xyzz
+  9: MOV TEMP[2].zw, TEMP[1].yyxy
+ 10: MOV TEMP[1].x, TEMP[1].zzzz
+ 11: MUL TEMP[3], CONST[9], IN[1].xxxx
+ 12: MAD TEMP[3], CONST[10], IN[1].yyyy, TEMP[3]
+ 13: MAD TEMP[3].xyz, CONST[11], IN[1].zzzz, TEMP[3]
+ 14: MOV TEMP[1].yzw, TEMP[3].yxyz
+ 15: MOV TEMP[2].xy, IN[2].xyxx
+ 16: MOV OUT[3], TEMP[1]
+ 17: MOV OUT[2], TEMP[2]
+ 18: MOV OUT[1], TEMP[0]
+ 19: MOV OUT[0], TEMP[0]
+ 20: END

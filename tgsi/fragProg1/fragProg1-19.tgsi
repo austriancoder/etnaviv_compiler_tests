@@ -1,0 +1,15 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], COLOR, COLOR
+DCL OUT[0], COLOR
+DCL CONST[0]
+DCL TEMP[0]
+IMM[0] FLT32 {    0.1000,     0.0000,     0.0000,     0.0000}
+IMM[1] FLT32 {    0.0000,     1.0000,   128.0000,     0.0000}
+DCL TEMP[1]
+  0: MUL TEMP[1].x, CONST[0].xxxx, IN[0].xxxx
+  1: MAD TEMP[1].x, CONST[0].yyyy, IN[0].yyyy, TEMP[1].xxxx
+  2: MAD TEMP[1].x, CONST[0].zzzz, IN[0].zzzz, TEMP[1].xxxx
+  3: ADD TEMP[0], IN[0].wwww, TEMP[1].xxxx
+  4: MUL OUT[0], TEMP[0], IMM[0].xxxx
+  5: END

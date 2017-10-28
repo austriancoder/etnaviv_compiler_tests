@@ -1,0 +1,75 @@
+VERT
+DCL IN[0]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[20]
+DCL CONST[0..19]
+DCL TEMP[0..3], LOCAL
+DCL ADDR[0]
+IMM[0] FLT32 {    4.0000,     0.0000,     1.0000,     2.0000}
+IMM[1] FLT32 {    0.0000,     1.0000,     2.0000,     3.0000}
+  0: MUL TEMP[0], CONST[16], IN[0].xxxx
+  1: MAD TEMP[0], CONST[17], IN[0].yyyy, TEMP[0]
+  2: MAD TEMP[0], CONST[18], IN[0].zzzz, TEMP[0]
+  3: MAD TEMP[0], CONST[19], IN[0].wwww, TEMP[0]
+  4: MUL TEMP[1].x, CONST[0].xxxx, IMM[0].xxxx
+  5: ADD TEMP[1].x, CONST[1].xxxx, TEMP[1].xxxx
+  6: ARL ADDR[0].x, TEMP[1].xxxx
+  7: MOV TEMP[1], CONST[ADDR[0].x+4]
+  8: SEQ TEMP[2].yzw, CONST[2].xxxx, IMM[1]
+  9: CMP TEMP[3].x, -TEMP[2].yyyy, TEMP[1].yyyy, TEMP[1].xxxx
+ 10: CMP TEMP[3].x, -TEMP[2].zzzz, TEMP[1].zzzz, TEMP[3].xxxx
+ 11: CMP TEMP[3].x, -TEMP[2].wwww, TEMP[1].wwww, TEMP[3].xxxx
+ 12: SEQ TEMP[1].x, TEMP[3].xxxx, CONST[3].xxxx
+ 13: IF TEMP[1].xxxx :0
+ 14:   MOV TEMP[1], IMM[0].yzyz
+ 15: ELSE :0
+ 16:   MOV TEMP[1], IMM[0].zyyz
+ 17: ENDIF
+ 18: MOV OUT[1], TEMP[1]
+ 19: MOV OUT[0], TEMP[0]
+ 20: END
+
+
+VERT
+0000: 07801003 39010800 000000d0 00000000  MUL t0, u16, t1.xxxx, void
+0001: 07801002 39011800 00aa00d0 00390008  MAD t0, u17, t1.yyyy, t0
+0002: 07801002 39012800 015400d0 00390008  MAD t0, u18, t1.zzzz, t0
+0003: 07801002 39013800 01fe00d0 00390008  MAD t0, u19, t1.wwww, t0
+0004: 07841009 00000000 00000000 20000148  MOV t4, void, void, u20.xxxx
+0005: 00811003 00000800 01c80250 00000000  MUL t1.x___, u0.xxxx, t4, void
+0006: 00811001 00001800 00000010 00000018  ADD t1.x___, u1.xxxx, void, t1.xxxx
+0007: 07841025 00000000 00000000 00000018  FLOOR t4, void, void, t1.xxxx
+0008: 0080000a 00000000 00000000 00390048  MOVAR a0.x___, void, void, t4
+0009: 07811009 00000000 00000000 22390048  MOV t1, void, void, u4[a.x]
+0010: 07841009 00000000 00000000 20390158  MOV t4, void, void, u21
+0011: 07021150 00002800 01c80250 00000000  SET.EQ t2._yzw, u2.xxxx, t4, void
+0012: 008313cf 55402800 00aa00c0 00000018  SELECT.LZ t3.x___, -t2.yyyy, t1.yyyy, t1.xxxx
+0013: 008313cf 6a802800 015400c0 00000038  SELECT.LZ t3.x___, -t2.zzzz, t1.zzzz, t3.xxxx
+0014: 008313cf 7fc02800 01fe00c0 00000038  SELECT.LZ t3.x___, -t2.wwww, t1.wwww, t3.xxxx
+0015: 00811150 00003800 000001c0 00000002  SET.EQ t1.x___, t3.xxxx, u3.xxxx, void
+0016: 00000156 00001800 00aa0a40 00000982  BRANCH.EQ void, t1.xxxx, u20.yyyy, label_0019
+0017: 07811009 00000000 00000000 20264148  MOV t1, void, void, u20.yzyz
+0018: 00000016 00000000 00000000 00000a00  BRANCH void, void, void, label_0020
+0019: 07811009 00000000 00000000 20258148  MOV t1, void, void, u20.zyyz
+0020: 00000000 00000000 00000000 00000000  NOP void, void, void, void
+num loops: 0
+num temps: 5
+num const: 80
+immediates:
+ [20].x = 4.000000 (0x40800000)
+ [20].y = 0.000000 (0x00000000)
+ [20].z = 1.000000 (0x3f800000)
+ [20].w = 2.000000 (0x40000000)
+ [21].x = 0.000000 (0x00000000)
+ [21].y = 1.000000 (0x3f800000)
+ [21].z = 2.000000 (0x40000000)
+ [21].w = 3.000000 (0x40400000)
+inputs:
+ [1] name=POSITION index=0 comps=4
+outputs:
+ [1] name=GENERIC index=20 comps=4
+special:
+  vs_pos_out_reg=0
+  vs_pointsize_out_reg=-1
+  vs_load_balancing=0x0f3f0522
+  input_count_unk8=0x00000001

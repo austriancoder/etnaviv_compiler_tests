@@ -1,0 +1,12 @@
+VERT
+DCL IN[0]
+DCL OUT[0], POSITION
+DCL OUT[1], GENERIC[20]
+DCL TEMP[0..1], LOCAL
+IMM[0] FLT32 {    1.0000,     0.5000,     0.0000,     0.0000}
+  0: MOV TEMP[0].w, IMM[0].xxxx
+  1: MOV TEMP[0].xyz, IN[0].xyzx
+  2: MAD TEMP[1].xy, IN[0].xyyy, IMM[0].yyyy, IMM[0].yyyy
+  3: MOV OUT[0], TEMP[0]
+  4: MOV OUT[1], TEMP[1]
+  5: END

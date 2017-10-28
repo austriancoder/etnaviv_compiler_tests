@@ -1,0 +1,44 @@
+
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], GENERIC[20], PERSPECTIVE
+DCL IN[1], GENERIC[21], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL SAMP[0]
+DCL SAMP[1]
+DCL SAMP[2]
+DCL SAMP[3]
+DCL CONST[4..9]
+DCL TEMP[0..3], LOCAL
+IMM[0] FLT32 {    0.5000,    -0.5000,     0.0000,     0.0000}
+  0: MOV TEMP[0].xy, IN[0].xyyy
+  1: TEX TEMP[0], TEMP[0], SAMP[1], 2D
+  2: SLT TEMP[1].x, TEMP[0].wwww, IMM[0].xxxx
+  3: IF TEMP[1].xxxx :0
+  4:   KILL
+  5: ENDIF
+  6: MUL TEMP[2].x, TEMP[0].wwww, CONST[8].xxxx
+  7: MOV TEMP[1].w, TEMP[2].xxxx
+  8: MOV TEMP[2].xy, IN[0].xyyy
+  9: TEX TEMP[2].xyz, TEMP[2], SAMP[3], 2D
+ 10: MOV TEMP[3].xy, IN[0].xyyy
+ 11: TEX TEMP[3].xyz, TEMP[3], SAMP[2], 2D
+ 12: MUL TEMP[3].xyz, TEMP[3].xyzz, CONST[4].xyzz
+ 13: MAD TEMP[2].xyz, TEMP[2].xyzz, CONST[5].xyzz, TEMP[3].xyzz
+ 14: ADD TEMP[1].xyz, TEMP[0].xyzz, TEMP[2].xyzz
+ 15: MOV TEMP[0].xy, IN[0].xyyy
+ 16: TEX TEMP[0].xyz, TEMP[0], SAMP[0], 2D
+ 17: ADD TEMP[0].xyz, TEMP[0].xyzz, IMM[0].yyyy
+ 18: DP3 TEMP[2].x, TEMP[0].xyzz, TEMP[0].xyzz
+ 19: RSQ TEMP[2].x, TEMP[2].xxxx
+ 20: MUL TEMP[0].xyz, TEMP[0].xyzz, TEMP[2].xxxx
+ 21: DP3 TEMP[2].x, IN[1].xyzz, IN[1].xyzz
+ 22: RSQ TEMP[2].x, TEMP[2].xxxx
+ 23: MUL TEMP[2].xyz, IN[1].xyzz, TEMP[2].xxxx
+ 24: DP3 TEMP[0].x, TEMP[0].xyzz, TEMP[2].xyzz
+ 25: MAX TEMP[0].x, TEMP[0].xxxx, IMM[0].zzzz
+ 26: MUL TEMP[0].xyz, CONST[7].xyzz, TEMP[0].xxxx
+ 27: MAD TEMP[0].xyz, TEMP[0].xyzz, CONST[9].xyzz, CONST[6].xyzz
+ 28: MUL TEMP[1].xyz, TEMP[1].xyzz, TEMP[0].xyzz
+ 29: MOV OUT[0], TEMP[1]
+ 30: END

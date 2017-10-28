@@ -1,0 +1,57 @@
+FRAG
+PROPERTY FS_COLOR0_WRITES_ALL_CBUFS 1
+DCL IN[0], GENERIC[10], PERSPECTIVE
+DCL OUT[0], COLOR
+DCL CONST[0..1]
+DCL TEMP[0..1], ARRAY(1), LOCAL
+DCL TEMP[2], LOCAL
+DCL ADDR[0]
+IMM[0] FLT32 {    0.0000,     1.0000,     0.0000,     0.0000}
+  0: MOV TEMP[0].xy, IN[0].xyxx
+  1: MOV TEMP[1].xy, IN[0].zwzz
+  2: ARL ADDR[0].x, CONST[0].xxxx
+  3: SNE TEMP[2], TEMP[ADDR[0].x](1).xyyy, CONST[1].xyyy
+  4: DP2 TEMP[2].x, TEMP[2], TEMP[2]
+  5: SGE TEMP[2].x, -TEMP[2].xxxx, IMM[0].xxxx
+  6: IF TEMP[2].xxxx :0
+  7:   MOV TEMP[2], IMM[0].xyxy
+  8: ELSE :0
+  9:   MOV TEMP[2], IMM[0].yxxy
+ 10: ENDIF
+ 11: MOV OUT[0], TEMP[2]
+ 12: END
+
+
+FRAG
+0000: 01821009 00000000 00000000 00010018  MOV t2.xy__, void, void, t1.xyxx
+0001: 01811009 00000000 00000000 002b8018  MOV t1.xy__, void, void, t1.zwzz
+0002: 07851025 00000000 00000000 20000008  FLOOR t5, void, void, u0.xxxx
+0003: 0080000a 00000000 00000000 00390058  MOVAR a0.x___, void, void, t5
+0004: 07831190 15002800 00a800c1 00000002  SET.NE t3, t2[a.x].xyyy, u1.xyyy, void
+0005: 00841003 00003800 000001c0 00000000  MUL t4.x___, t3.xxxx, t3.xxxx, void
+0006: 00831002 15403800 00aa01c0 00000048  MAD t3.x___, t3.yyyy, t3.yyyy, t4.xxxx
+0007: 008310d0 40003800 00000140 00000002  SET.GE t3.x___, -t3.xxxx, u2.xxxx, void
+0008: 00000156 00003800 00000140 00000582  BRANCH.EQ void, t3.xxxx, u2.xxxx, label_0011
+0009: 07831009 00000000 00000000 20110028  MOV t3, void, void, u2.xyxy
+0010: 00000016 00000000 00000000 00000600  BRANCH void, void, void, label_0012
+0011: 07831009 00000000 00000000 20104028  MOV t3, void, void, u2.yxxy
+0012: 00000000 00000000 00000000 00000000  NOP void, void, void, void
+num loops: 0
+num temps: 6
+num const: 8
+immediates:
+ [2].x = 0.000000 (0x00000000)
+ [2].y = 1.000000 (0x3f800000)
+ [2].z = 0.000000 (0x00000000)
+ [2].w = 0.000000 (0x00000000)
+ [3].x = 0.000000 (0x00000000)
+ [3].y = 1.000000 (0x3f800000)
+ [3].z = 128.000000 (0x43000000)
+ [3].w = 0.000000 (0x00000000)
+inputs:
+ [1] name=GENERIC index=10 comps=4
+outputs:
+special:
+  ps_color_out_reg=3
+  ps_depth_out_reg=-1
+  input_count_unk8=0x0000001f
