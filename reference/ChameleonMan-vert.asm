@@ -100,7 +100,7 @@ IMM[1] FLT32 {    2.0000,     0.0000,     0.0000,     0.0000}
  78:       MAD TEMP[0].xyz, TEMP[16].xyzz, IN[2].yyyy, TEMP[0].xyzz
  79:       MAD TEMP[0].xyz, TEMP[17].xyzz, IN[2].zzzz, TEMP[0].xyzz
  80:       MAD TEMP[19].xyz, TEMP[0].xyzz, IN[5].yyyy, TEMP[19].xyzz
- 81:       MUL TEMP[0].xyz, TEMP[15].xyzz, IN[etna_compile_check_limits:2254: Number of constants (252) exceeds maximum 168
+ 81:       MUL TEMP[0].xyz, TEMP[15].xyzz, IN[etna_compile_check_limits:2262: Number of constants (252) exceeds maximum 168
 VERT
 0000: 079d1009 00000000 00000000 20000058  MOV t29, void, void, u5.xxxx
 0001: 00801090 0003f800 01c80ed0 00000000  SET.LT t0.x___, u63.xxxx, t29, void

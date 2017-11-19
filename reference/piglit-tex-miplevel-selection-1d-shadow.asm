@@ -20,5 +20,4 @@ IMM[0] FLT32 {   -0.0000,    -0.0500,     0.0000,     0.0500}
  10: END
 
 
-etnaviv_compiler: etnaviv_compiler.c:1858: etna_compile_pass_generate_code: Assertion `0' failed.
-etna_compile_pass_generate_code:1857: Unhandled instruction TXD
+etnaviv_compiler: etnaviv_compiler.c:1861: etna_compile_pass_generate_code: Assertion `0' failed.
